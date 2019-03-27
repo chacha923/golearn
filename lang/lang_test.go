@@ -1,26 +1,37 @@
 package lang
 
 import (
-	"testing"
-	"runtime"
 	"fmt"
 	"log"
+	"os"
+	"runtime"
+	"testing"
 )
 
+var array [3]int
+
 func init() {
-	log.SetFlags(log.LstdFlags|log.Lshortfile)
+	array[0] = 0
+	array[1] = 1
+	array[2] = 2
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 
 func TestRangeMap(t *testing.T) {
 	RangeMap()
 }
 
+func TestRangeSlice(t *testing.T) {
+	slice := NewSlice()
+	fmt.Println(RangeSlice(slice))
+}
+
 func TestRangeArrayPoint(t *testing.T) {
-	RangeArrayPoint()
+	fmt.Println(RangeArrayPoint(array))
 }
 
 func TestRangeArray(t *testing.T) {
-	RangeArray()
+	fmt.Println(RangeArray(array))
 }
 
 func TestMaxProc(t *testing.T) {
@@ -33,4 +44,16 @@ func TestListBack(t *testing.T) {
 
 func TestRunError(t *testing.T) {
 	fmt.Println(RunError())
+}
+
+func TestSlice(t *testing.T) {
+	Slice()
+}
+
+func TestTmp(t *testing.T) {
+	fmt.Println("temp dir : ", os.TempDir())
+}
+
+func TestBar(t *testing.T) {
+	bar()
 }

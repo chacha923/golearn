@@ -38,27 +38,27 @@ func RangeMap() {
 	}
 }
 
-func RangeSlice() {
-	slice := NewSlice()
-	for k,v := range slice {
-		fmt.Println(k,v)
+func RangeSlice(slice []int) []int{
+	for k,_ := range slice {
+		slice[k] = slice[k] + 1
 	}
+	return slice
 }
 
-func RangeArrayPoint(){
-	array := NewArray()
+func RangeArrayPoint(array [3]int) [3]int{
 	glog.Errorln("RangeArrayPoint before range",array)
 	for k, v := range &array {
 		array[k] = v + 1
 	}
 	glog.Errorln(array)
+	return array
 }
 
-func RangeArray(){
-	array := NewArray()
+func RangeArray(array [3]int) [3]int{
 	glog.Errorln("RangeArray before range",array)
 	for k, v := range array {
 		array[k] = v + 1
 	}
 	glog.Errorln(array)
+	return array
 }
