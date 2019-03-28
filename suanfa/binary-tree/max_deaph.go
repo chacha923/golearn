@@ -11,5 +11,5 @@ func MaxDeaph(head *TreeNode) int{
 
 	left := MaxDeaph(head.left)
 	right := MaxDeaph(head.right)
-	return lib.Max(left, right) + 1
+	return lib.Max(left, right) + 1		//注意退出条件
 }

@@ -24,13 +24,13 @@ func (c HashRing) Less(i, j int) bool {
 	return c[i] < c[j]
 }
 
-//交换两个hashring上的值
+//交换hashring上下标i,j的元素值
 func (c HashRing) Swap(i, j int) {
 	c[i], c[j] = c[j], c[i]
 }
 
 type Node struct {
-	Id       int
+	Id       int	//id 必须唯一性
 	Ip       string
 	Port     int
 	HostName string
@@ -129,7 +129,7 @@ func (c *Consistent) search(hash uint32) int {
 			return i
 		}
 	} else {
-		return len(c.ring) - 1
+		return len(c.ring) - 1	//查找失败, hash值落到c.ring上最后一个节点
 	}
 }
 
