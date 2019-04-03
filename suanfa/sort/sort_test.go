@@ -9,3 +9,7 @@ func TestHeapSort(t *testing.T) {
 func TestRunFastSort(t *testing.T) {
 	RunFastSort()
 }
+
+func TestRunMergeSort(t *testing.T) {
+	RunMergeSort()
+}
