@@ -7,17 +7,22 @@ import "fmt"
 //将完全二叉树(堆)用数组表示, 初始下标为0, 那么i节点的左右孩子下标为2i+1, 2i+2
 //大根堆堆特性:  一个完全二叉树, 任何一个父节点 >= 右孩子 与 左孩子 最大值
 
-var (
-	heap = []int{100, 16, 4, 8, 70, 2, 37, 23, 5, 12}
-)
+var heap = []int{100, 16, 4, 8, 70, 2, 37, 23, 5, 12}
 
 //https://studygolang.com/articles/3719
 //根据上面的代码修改, 不改变Less函数
-
 func RunHeapSort() {
 	MakeHeap()
 	HeapSort()
-	Print(heap)
+	fmt.Println(heap)
+}
+
+//构建堆, 初始化操作, 初始化后堆的最后一个元素有序
+func MakeHeap() {
+	n := len(heap)
+	for i := n/2 - 1; i >= 0; i-- { //从最后一个非叶子节点开始处理, 最后一个非叶子节点的下标为n/2 - 1
+		down(i, n)
+	}
 }
 
 func HeapSort() {
@@ -27,23 +32,16 @@ func HeapSort() {
 		down(0, i)
 	}
 }
-//构建堆, 初始化操作, 初始化后堆的最后一个元素有序
-func MakeHeap() {
-	n := len(heap)
-	for i := n/2 - 1; i >= 0; i-- { //从最后一个非叶子节点开始处理, 最后一个非叶子节点的下标为n/2 - 1
-		down(i, n)
-	}
-}
 
 //每当一个顶部元素与末尾交换, 进行一次down操作, 称为堆化
 func down(i, n int) {
 	for {
-		j1 := 2*i + 1 //找i节点左孩子
+		j1 := 2*i + 1          //找i节点左孩子
 		if j1 >= n || j1 < 0 { // j1 < 0 after int overflow
 			break
 		}
 		//找出两个节点中最小的(less: a<b)
-		j := j1 //中间变量, 记录父左右 当中最大的节点
+		j := j1                                   //中间变量, 记录父左右 当中最大的节点
 		if j2 := j1 + 1; j2 < n && Less(j1, j2) { //i节点右孩子j2
 			j = j2
 		}
@@ -52,7 +50,7 @@ func down(i, n int) {
 			break
 		}
 		swap(i, j)
-		i = j			//如果发生交换, 那么新的子节点可能不满足堆, 继续向下做down操作
+		i = j //如果发生交换, 那么新的子节点可能不满足堆, 继续向下做down操作
 	}
 }
 
@@ -96,7 +94,7 @@ func Pop() interface{} {
 	old := heap
 	n = len(old)
 	x := old[n-1]
-	heap = old[0: n-1]
+	heap = old[0 : n-1]
 	return x
 }
 
@@ -110,8 +108,37 @@ func Remove(i int) interface{} {
 	return Pop()
 }
 
-func Print(arr []int) {
-	for _, v := range arr {
-		fmt.Printf("%d ", v)
+/**
+父节点i的左子节点在位置 (2i+1)
+父节点i的右子节点在位置 (2i+2)
+子节点i的父节点在位置  floor((i-1)/2)
+*/
+func RunHeapSort2() {
+	m := len(heap)
+	s := len(heap) / 2 //最后一个非叶子节点的索引
+	for i := s; i > -1; i-- {
+		heapSort2(heap, i, m-1)
 	}
+	for i := m - 1; i > 0; i-- {
+		swap(i, 0)
+		heapSort2(heap, 0, i-1)
+	}
+	fmt.Println(heap)
+}
+
+func heapSort2(arr []int, i, end int) {
+	l := 2*i + 1 //左孩子
+	if l > end {
+		return
+	}
+	n := l
+	r := 2*i + 2 //右孩子
+	if r <= end && arr[r] > arr[l] {
+		n = r
+	}
+	if arr[i] > arr[n] {
+		return
+	}
+	swap(i, n)
+	heapSort2(arr, n, end)
 }
