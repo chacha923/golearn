@@ -8,6 +8,10 @@ func RunRadixSort() {
 	radixSort()
 	fmt.Println(data)
 }
+
+/**
+ * 基数排序:先将低位数字用计数排序排好,再依次对高位进行排序
+ */
 func radixSort() {
 	llen := len(data)
 	bits := maxbit(arr) //数组中最大元素的位数
@@ -16,15 +20,14 @@ func radixSort() {
 	bitValue := 0
 	radix := 1
 
-	for i := 1; i <= bits; i++ {
+	for i := 1; i <= bits; i++ { //进行d次排序
 		for j := 0; j < 10; j++ {
-			count[j] = 0
+			count[j] = 0 //每次分配前清空计数器
 		}
 		for j := 0; j < llen; j++ {
 			bitValue = (data[j] / radix) % 10 //统计每个桶中的记录数
 			count[bitValue]++
 		}
-
 		for j := 1; j < 10; j++ {
 			count[j] = count[j-1] + count[j] //将tmp中的位置依次分配给每个桶
 		}
@@ -33,7 +36,6 @@ func radixSort() {
 			tmp[count[bitValue]-1] = data[j]
 			count[bitValue]--
 		}
-
 		for j := 0; j < llen; j++ { //将临时数组的内容复制到data中
 			data[j] = tmp[j]
 		}
