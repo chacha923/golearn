@@ -4,12 +4,12 @@ import (
 	"golearn/suanfa/lib"
 )
 
-func MaxDeaph(head *TreeNode) int{
+func MaxDepth(head *TreeNode) int {
 	if head == nil {
 		return 0
 	}
 
-	left := MaxDeaph(head.left)
-	right := MaxDeaph(head.right)
-	return lib.Max(left, right) + 1		//注意退出条件
+	left := MaxDepth(head.left)
+	right := MaxDepth(head.right)
+	return lib.Max(left, right) + 1 //注意退出条件
 }

@@ -61,3 +61,36 @@ func merge(arr, tmp []int, left, mid, right int) {
 		t++
 	}
 }
+
+func RunMergeSort2() {
+	arr = MergeSort2(arr)
+	fmt.Println(arr)
+}
+
+func MergeSort2(arr []int) []int {
+	n := len(arr)
+	if n < 2 {
+		return arr
+	}
+	key := n / 2
+	left := MergeSort2(arr[0:key])
+	right := MergeSort2(arr[key:])
+	return merge2(left, right)
+}
+
+func merge2(left, right []int) []int {
+	tmp := make([]int, 0)
+	i, j := 0, 0
+	for i < len(left) && j < len(right) {
+		if left[i] < right[j] {
+			tmp = append(tmp, left[i])
+			i++
+		} else {
+			tmp = append(tmp, right[j])
+			j++
+		}
+	}
+	tmp = append(tmp, left[i:]...)
+	tmp = append(tmp, right[j:]...)
+	return tmp
+}
