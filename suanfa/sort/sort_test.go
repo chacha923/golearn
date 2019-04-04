@@ -13,3 +13,7 @@ func TestRunFastSort(t *testing.T) {
 func TestRunMergeSort(t *testing.T) {
 	RunMergeSort()
 }
+
+func TestRunRadixSort(t *testing.T) {
+	RunRadixSort()
+}
