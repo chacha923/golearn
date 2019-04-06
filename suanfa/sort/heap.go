@@ -64,6 +64,10 @@ func swap(a, b int) {
 	heap[a], heap[b] = heap[b], heap[a]
 }
 
+func Swap(slice []int, a, b int) {
+	slice[a], slice[b] = slice[b], slice[a]
+}
+
 ////////////////////////////////////下面通常不用///////////////////////////////
 //由子节点到父节点重新开始建堆
 func up(j int) {

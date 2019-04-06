@@ -3,11 +3,11 @@ package binary_tree
 //二叉树节点
 
 type TreeNode struct {
-	value int
-	left *TreeNode
-	right *TreeNode
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
 }
 
-func NewTreeNode (value int) *TreeNode{
-	return &TreeNode{value:value}
+func NewTreeNode(value int) *TreeNode {
+	return &TreeNode{Val: value}
 }

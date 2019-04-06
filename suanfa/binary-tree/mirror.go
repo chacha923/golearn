@@ -1,6 +1,6 @@
 package binary_tree
 
-func MirrorRecursively(root *TreeNode){
+func MirrorRecursively(root *TreeNode) {
 	if root == nil {
 		return
 	}
@@ -8,14 +8,17 @@ func MirrorRecursively(root *TreeNode){
 		return
 	}
 
-	tmp := root.left
-	root.left = root.right
-	root.right = tmp
-
+	swapLRNode(root)
 	if root.left != nil {
 		MirrorRecursively(root.left)
 	}
 	if root.right != nil {
 		MirrorRecursively(root.right)
 	}
+}
+
+func swapLRNode(father *TreeNode) {
+	tmp := father.left
+	father.left = father.right
+	father.right = tmp
 }

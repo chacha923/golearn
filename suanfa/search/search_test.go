@@ -1,8 +1,8 @@
 package search
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 var (
@@ -11,4 +11,8 @@ var (
 
 func TestBinSearch(t *testing.T) {
 	fmt.Println(binarySearch(array, 100))
+}
+
+func TestBinarySearch2(t *testing.T) {
+	fmt.Println(binarySearch2(array, 0, len(array)-1, 100))
 }
