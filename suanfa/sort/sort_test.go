@@ -14,6 +14,10 @@ func TestRunFastSort(t *testing.T) {
 	RunFastSort()
 }
 
+func TestRunFastSort2(t *testing.T) {
+	FastSort2(arr)
+}
+
 func TestRunMergeSort(t *testing.T) {
 	RunMergeSort()
 }
