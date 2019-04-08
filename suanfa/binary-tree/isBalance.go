@@ -8,7 +8,7 @@ func IsBalance(root *TreeNode, depth *int) bool {
 	}
 	left := 0
 	right := 0
-	if IsBalance(root.left, &left) && IsBalance(root.right, &right) {
+	if IsBalance(root.Left, &left) && IsBalance(root.Right, &right) {
 		diff := left - right
 		if diff <= 1 && diff >= -1 {
 			return true
@@ -24,12 +24,12 @@ func IsBalance1(root *TreeNode) bool {
 		return true
 	}
 
-	nLeftDepth := MaxDeaph(root.left)
-	nRightDepth := MaxDeaph(root.right)
+	nLeftDepth := MaxDepth(root.Left)
+	nRightDepth := MaxDepth(root.Right)
 	diff := nRightDepth - nLeftDepth
 
 	if diff > 1 || diff < -1 {
 		return false
 	}
-	return IsBalance1(root.left) && IsBalance1(root.right)
+	return IsBalance1(root.Left) && IsBalance1(root.Right)
 }

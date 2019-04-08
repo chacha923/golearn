@@ -4,21 +4,21 @@ func MirrorRecursively(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	if root.left == nil && root.right == nil {
+	if root.Left == nil && root.Right == nil {
 		return
 	}
 
 	swapLRNode(root)
-	if root.left != nil {
-		MirrorRecursively(root.left)
+	if root.Left != nil {
+		MirrorRecursively(root.Left)
 	}
-	if root.right != nil {
-		MirrorRecursively(root.right)
+	if root.Right != nil {
+		MirrorRecursively(root.Right)
 	}
 }
 
 func swapLRNode(father *TreeNode) {
-	tmp := father.left
-	father.left = father.right
-	father.right = tmp
+	tmp := father.Left
+	father.Left = father.Right
+	father.Right = tmp
 }

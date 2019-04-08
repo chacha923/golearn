@@ -19,16 +19,16 @@ var head *TreeNode
 
 func init() {
 	head = new(TreeNode)
-	head.value = 100
-	head.left = NewTreeNode(16)
-	head.left.left = NewTreeNode(4)
-	head.left.right = NewTreeNode(8)
-	head.right = NewTreeNode(70)
-	head.right.left = NewTreeNode(2)
-	head.right.left.left = NewTreeNode(23)
-	head.right.left.right = NewTreeNode(5)
-	head.right.right = NewTreeNode(37)
-	head.right.right.left = NewTreeNode(12)
+	head.Val = 100
+	head.Left = NewTreeNode(16)
+	head.Left.Left = NewTreeNode(4)
+	head.Left.Right = NewTreeNode(8)
+	head.Right = NewTreeNode(70)
+	head.Right.Left = NewTreeNode(2)
+	head.Right.Left.Left = NewTreeNode(23)
+	head.Right.Left.Right = NewTreeNode(5)
+	head.Right.Right = NewTreeNode(37)
+	head.Right.Right.Left = NewTreeNode(12)
 }
 
 func TestMaxDeaph(t *testing.T) {

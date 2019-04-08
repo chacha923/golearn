@@ -9,7 +9,7 @@ func MaxDepth(head *TreeNode) int {
 		return 0
 	}
 
-	left := MaxDepth(head.left)
-	right := MaxDepth(head.right)
+	left := MaxDepth(head.Left)
+	right := MaxDepth(head.Right)
 	return lib.Max(left, right) + 1 //注意退出条件
 }
