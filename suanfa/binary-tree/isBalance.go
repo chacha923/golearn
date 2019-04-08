@@ -1,7 +1,6 @@
 package binary_tree
 
 //判断一颗二叉树树是不是平衡二叉树
-
 func IsBalance(root *TreeNode, depth *int) bool {
 	if root == nil {
 		return true
