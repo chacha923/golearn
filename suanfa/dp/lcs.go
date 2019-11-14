@@ -87,3 +87,36 @@ func lcs(x, y string) {
 	}
 
 }
+
+func LCSLength(x []byte, y []byte) int {
+	m := len(x)
+	n := len(y)
+	lookup := make([][]int, m+1)
+	for i := range lookup {
+		lookup[i] = make([]int, n+1)
+	}
+	var i, j int
+	for i = 0; i <= m; i++ {
+		lookup[i][0] = 0
+	}
+	for j = 0; j <= n; j++ {
+		lookup[0][j] = 0
+	}
+
+	for i = 1; i <= m; i++ {
+		for j = 1; j <= n; j++ {
+			if x[i-1] == y[j-1] {
+				lookup[i][j] = lookup[i-1][j-1] + 1
+			} else {
+				len1 := lookup[i-1][j]
+				len2 := lookup[i][j-1]
+				if len1 > len2 {
+					lookup[i][j] = len1
+				} else {
+					lookup[i][j] = len2
+				}
+			}
+		}
+	}
+	return lookup[m][n]
+}
