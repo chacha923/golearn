@@ -1,26 +1,18 @@
 package dp
 
-import "math"
-
 func coinChange(coins []int, amount int) int {
-	if amount == 0 {
-		return 0
-	}
-	ans := math.MaxInt64
-	for _, c := range coins {
-		if amount-c < 0 {
-			continue
+	dp := make([]int, amount+1)
+	for i := 1; i <= amount; i++ {
+		for _, coin := range coins {
+			if coin <= i {
+				dp[i] = min(dp[i-coin]+1, dp[i])
+			}
 		}
-		sub := coinChange(coins, amount-c)
-		if sub == -1 {
-			continue
-		}
-		ans = min(ans, sub+1)
 	}
-	if ans == math.MaxInt64 {
+	if dp[amount] > amount {
 		return -1
 	} else {
-		return ans
+		return dp[amount]
 	}
 }
 
