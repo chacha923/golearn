@@ -1,28 +1,31 @@
 package sort
 
-//计数排序
-//
-//计数排序的过程类似小学选班干部的过程,如某某人10票,作者9票,那某某人是班长,作者是副班长
-//大体分两部分,第一部分是拉选票和投票,第二部分是根据你的票数入桶
+// 计数排序对输入的数据有附加的限制条件：
+// 1、输入的线性表的元素属于有限偏序集S；
+// 2、设输入的线性表的长度为n，|S|=k（表示集合S中元素的总数目为k），则k=O(n)。
+// 在这两个条件下，计数排序的复杂性为O(n)。
 
 func CountSort(array []int) []int {
-	if array == nil {
-		return nil
-	}
-
-	length := len(array)
-	count := make([]int, length)
-	for i := 0; i < length; i++ {
-		for j := 0; j < length; j++ {
-			if array[j] < array[i] {
-				count[i] = count[i] + 1
-			}
+	maxVal := 0
+	for i := range array {
+		if array[i] > maxVal {
+			maxVal = array[i]s
 		}
 	}
-	result := make([]int, length)
-	for i := 0; i < length; i++ {
-		rank := count[i]
-		result[rank] = array[i]
+	tmp := make([]int,maxVal + 1) // idx: 元素 value: 出现的次数
+	for i := range array {
+		tmp[array[i]]++
 	}
-	return result
+	var j int
+	for i := 0; i<len(tmp); i++ {
+		for tmp[i] > 0 {
+			arr[j] = i
+			j++
+			tmp[i]--
+		}
+	}
+}
+
+func RunCountSort() {
+	CountSort(data)
 }
