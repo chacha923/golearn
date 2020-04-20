@@ -1,10 +1,17 @@
 package list
 
 type ListNode struct {
-	Next *ListNode
+	Next  *ListNode
 	Value int
 }
 
-func NewListNode(value int) *ListNode{
-	return &ListNode{Value:value}
+type DequeNode struct {
+	Key   int
+	Value int
+	Pre   *DequeNode
+	Next  *DequeNode
+}
+
+func NewListNode(value int) *ListNode {
+	return &ListNode{Value: value}
 }

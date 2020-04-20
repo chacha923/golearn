@@ -57,3 +57,21 @@ func nthToLast(head *ListNode, n int) *ListNode {
 	}
 	return l1
 }
+
+// 返回倒数第k个节点,  使用dummy节点
+func kthToLast(head *ListNode, k int) int {
+	var dummy = &ListNode{}
+	dummy.Next = head // dummy指向头节点
+	var fast, slow = dummy, dummy
+
+	for i := 0; i < k-1; i++ {
+		fast = fast.Next
+	}
+	for {
+		if fast.Next == nil {
+			return slow.Value
+		}
+		fast = fast.Next
+		slow = slow.Next
+	}
+}
