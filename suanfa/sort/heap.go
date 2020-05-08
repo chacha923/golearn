@@ -7,10 +7,9 @@ import "fmt"
 //将完全二叉树(堆)用数组表示, 初始下标为0, 那么i节点的左右孩子下标为2i+1, 2i+2
 //大根堆堆特性:  一个完全二叉树, 任何一个父节点 >= 右孩子 与 左孩子 最大值
 
-var heap = []int{100, 16, 4, 8, 70, 2, 37, 23, 5, 12}
-
 //https://studygolang.com/articles/3719
-//根据上面的代码修改, 不改变Less函数
+//https://www.cnblogs.com/outerspace/p/11098461.html
+//根据上面的代码修改, 不改变less函数
 func RunHeapSort() {
 	MakeHeap()
 	HeapSort()
@@ -21,7 +20,7 @@ func RunHeapSort() {
 func MakeHeap() {
 	n := len(heap)
 	for i := n/2 - 1; i >= 0; i-- { //从最后一个非叶子节点开始处理, 最后一个非叶子节点的下标为n/2 - 1
-		down(i, n)
+		downRecur(i, n)
 	}
 }
 
@@ -29,33 +28,52 @@ func HeapSort() {
 	for i := len(heap) - 1; i > 0; i-- {
 		//移除顶部元素到数组末尾,然后剩下的重建堆,依次循环, 每循环一次, 堆的末尾有一个元素变为有序, 数组从后往前逐渐有序
 		swap(0, i)
-		down(0, i)
+		downRecur(0, i)
 	}
 }
 
 //每当一个顶部元素与末尾交换, 进行一次down操作, 称为堆化
+// i: 操作的索引, n: 堆大小
 func down(i, n int) {
 	for {
-		j1 := 2*i + 1          //找i节点左孩子
-		if j1 >= n || j1 < 0 { // j1 < 0 after int overflow
+		j1 := left(i)          //找i节点左孩子
+		if j1 >= n || j1 < 0 { // 越界退出
 			break
 		}
 		//找出两个节点中最小的(less: a<b)
-		j := j1                                   //中间变量, 记录父左右 当中最大的节点
-		if j2 := j1 + 1; j2 < n && Less(j1, j2) { //i节点右孩子j2
+		j := j1                                     //中间变量, 记录左右孩子 当中最大的节点
+		if j2 := right(i); j2 < n && less(j1, j2) { //i节点右孩子j2
 			j = j2
 		}
-		//此时j记录左右孩子中较大的节点, 如果i节点比左右孩子大, 那么满足堆
-		if Less(j, i) {
+		//此时j记录左右孩子中较大的节点, 如果i节点比左右孩子大, 那么满足堆, 不需要交换
+		if less(j, i) {
 			break
 		}
-		swap(i, j)
-		i = j //如果发生交换, 那么新的子节点可能不满足堆, 继续向下做down操作
+		swap(i, j) // 否则i和较大的孩子交换
+		i = j      // 如果发生交换, 那么新的子节点可能不满足堆, 继续向下做down操作
 	}
 }
 
+// down操作递归版本
+func downRecur(i, n int) {
+	l := left(i)
+	r := right(i)
+	max := i
+	if l < n && less(max, l) {
+		max = l
+	}
+	if r < n && less(max, r) {
+		max = r
+	}
+	if max != i {
+		Swap(heap, i, max)
+		downRecur(max, n)
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
 //判断下标a元素是否比下标b小
-func Less(a, b int) bool {
+func less(a, b int) bool {
 	return heap[a] < heap[b]
 }
 
@@ -68,13 +86,18 @@ func Swap(slice []int, a, b int) {
 	slice[a], slice[b] = slice[b], slice[a]
 }
 
+// 严格小于
+func Less(slice []int, a, b int) bool {
+	return slice[a] < slice[b]
+}
+
 ////////////////////////////////////下面通常不用///////////////////////////////
 //由子节点到父节点重新开始建堆
 func up(j int) {
 	for {
 		i := (j - 1) / 2 //得到父节点
-		if i == j || Less(j, i) {
-			//less(子,父) !Less(9,5) == true
+		if i == j || less(j, i) {
+			//less(子,父) !less(9,5) == true
 			//父节点小于子节点,符合最小堆条件,break
 			break
 		}
@@ -142,7 +165,6 @@ func heapSort2(arr []int, i, end int) {
 	}
 	if arr[i] > arr[n] {
 		return
-	}
 	swap(i, n)
 	heapSort2(arr, n, end)
 }

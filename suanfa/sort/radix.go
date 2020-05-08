@@ -2,8 +2,6 @@ package sort
 
 import "fmt"
 
-var data = []int{278, 109, 63, 930, 589, 184, 505, 269, 8, 83}
-
 func RunRadixSort() {
 	radixSort()
 	fmt.Println(data)

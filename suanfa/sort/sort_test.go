@@ -1,6 +1,8 @@
 package sort
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestHeapSort(t *testing.T) {
 	RunHeapSort()
@@ -15,7 +17,6 @@ func TestRunFastSort(t *testing.T) {
 }
 
 func TestRunFastSort2(t *testing.T) {
-	FastSort2(arr)
 }
 
 func TestRunMergeSort(t *testing.T) {
@@ -28,4 +29,9 @@ func TestRunMergeSort2(t *testing.T) {
 
 func TestRunRadixSort(t *testing.T) {
 	RunRadixSort()
+}
+
+func TestRunHeapSortV2(t *testing.T) {
+	heapSortV2()
+	t.Fatal(heap)
 }

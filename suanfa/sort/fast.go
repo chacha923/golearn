@@ -2,8 +2,6 @@ package sort
 
 import "fmt"
 
-var arr = []int{6, 1, 2, 7, 9, 3, 4, 5, 10, 8}
-
 func RunFastSort() {
 	fmt.Println(arr)
 	fmt.Println(FastSort(arr, 0, len(arr)-1))
@@ -23,17 +21,17 @@ func FastSort(arr []int, start int, end int) []int {
 				i++
 			}
 			if i <= j {
-				temp := arr[i]
-				arr[i] = arr[j]
-				arr[j] = temp
+				swap(arr[i], arr[j])
 			}
 			//fmt.Println(arr)
 		}
 		//arr[i] = mid	//此时arr[i]有序
 
+		// 递归操作前一部分
 		if start <= i {
 			FastSort(arr, start, i-1)
 		}
+		// 递归操作后一部分
 		if end >= j {
 			FastSort(arr, j+1, end)
 		}

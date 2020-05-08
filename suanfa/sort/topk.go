@@ -31,7 +31,7 @@ func getLeastNumbersWithFastSort(arr []int, k int) []int {
 	if k == 0 {
 		return nil
 	}
-
+	return nil
 }
 
 func fastSort(arr []int, start int, end int, k int) []int {
