@@ -24,7 +24,6 @@ func IsBalance1(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}
-
 	nLeftDepth := MaxDepth(root.Left)
 	nRightDepth := MaxDepth(root.Right)
 	diff := nRightDepth - nLeftDepth
@@ -43,4 +42,19 @@ func MaxDepth(head *TreeNode) int {
 	left := MaxDepth(head.Left)
 	right := MaxDepth(head.Right)
 	return lib.Max(left, right) + 1 //注意退出条件
+}
+
+// 最小深度
+func MinDepth(head *TreeNode) int {
+	if head == nil {
+		return 0
+	}
+	// null节点不参与比较
+	if head.Left != nil && head.Right == nil {
+		return 1 + MinDepth(head.Left)
+	}
+	if head.Left == nil && head.Right != nil {
+		return 1 + MinDepth(head.Right)
+	}
+	return lib.Min(MinDepth(head.Left), MinDepth(head.Right)) + 1
 }

@@ -25,9 +25,9 @@ func InOrder(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	PreOrder(root.Left)
+	InOrder(root.Left)
 	fmt.Println(root.Val)
-	PreOrder(root.Right)
+	InOrder(root.Right)
 }
 
 //递归后序遍历
@@ -35,8 +35,8 @@ func PostOrder(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	PreOrder(root.Left)
-	PreOrder(root.Right)
+	PostOrder(root.Left)
+	PostOrder(root.Right)
 	fmt.Println(root.Val)
 }
 
@@ -49,6 +49,7 @@ func LevelOrder(root *TreeNode) {
 	queue.Add(root)
 	for queue.Length() != 0 {
 		length := queue.Length()
+		// 遍历队列, 弹出节点, 每弹出一个把左右孩子插入队尾
 		for i := 0; i < length; i++ {
 			node := queue.Remove().(*TreeNode)
 			fmt.Print(node.Val, " ")
