@@ -1,10 +1,11 @@
 package binarytree
 
-func NumOfTree(root *TreeNode) int {
+// 二叉树节点数
+func NumOfTreeNode(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	left := NumOfTree(root.Left)
-	right := NumOfTree(root.Right)
+	left := NumOfTreeNode(root.Left)
+	right := NumOfTreeNode(root.Right)
 	return left + right + 1
 }

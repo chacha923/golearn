@@ -15,7 +15,6 @@ func IsBalance(root *TreeNode, depth *int) bool {
 			return true
 		}
 	}
-
 	return false
 }
 

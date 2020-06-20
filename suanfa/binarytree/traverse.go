@@ -7,7 +7,7 @@ import (
 	"github.com/eapache/queue"
 )
 
-//遍历
+// 遍历模板
 
 //递归前序遍历
 func PreOrder(root *TreeNode) {
@@ -93,6 +93,7 @@ func LevelOrder2(root *TreeNode) [][]int {
 }
 
 // 给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+// Z字型遍历
 func LevelOrderZ(root *TreeNode) [][]int {
 	if root == nil {
 		return nil
