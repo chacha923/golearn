@@ -19,7 +19,7 @@ func init() {
 func TestReverse(t *testing.T) {
 	newHead := Reverse(head)
 	for newHead != nil {
-		fmt.Println(newHead.Value)
+		fmt.Println(newHead.Val)
 		newHead = newHead.Next
 	}
 }

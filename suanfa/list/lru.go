@@ -16,27 +16,28 @@ func Constructor(cap int) LRUCache {
 func (l *LRUCache) Get(key int) int {
 	if v, ok := l.HashMap[key]; ok {
 		l.refreshNode(v)
-		return v.Value
+		return v.Val
 	} else {
 		return -1
 	}
 }
 
-func (l *LRUCache) Put(key int, value int) {
+func (l *LRUCache) Put(key int, Val int) {
 	if v, ok := l.HashMap[key]; !ok {
 		if len(l.HashMap) >= l.limit {
-			oldKey := l.removeNode(l.head)
-			delete(l.HashMap, key)
+			oldKey := l.removeNode(l.head) //删链表
+			delete(l.HashMap, key)         //删hash表
 		}
-		node := &DequeNode{Key: key, Value: value}
+		node := &DequeNode{Key: key, Val: Val}
 		l.addNode(node)
 		h.HashMap[key] = node
 	} else {
-		v.Value = value
+		v.Val = Val
 		l.refreshNode(v)
 	}
 }
 
+// 刷新, 把一个节点插到链表头
 func (l *LRUCache) refreshNode(node *DequeNode) {
 	if node == nil {
 		return
