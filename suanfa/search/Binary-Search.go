@@ -9,12 +9,13 @@ func binarySearch(array []int, key int) int {
 
 	for left <= right {
 		// Prevent (left + right) overflow
-		var mid = (left + right) / 2
+		// var mid = (left + right) / 2
+		var mid = left + (right-left)/2 // 防止溢出
 		if array[mid] == key {
 			return mid
 		} else if array[mid] < key {
 			left = mid + 1
-		} else {
+		} else if array[mid] > key {
 			right = mid - 1
 		}
 	}
