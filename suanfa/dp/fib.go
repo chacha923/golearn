@@ -1,5 +1,6 @@
 package dp
 
+// 菲波那切数列
 func Fib(n int) int {
 	fib := make([]int, n+1)
 	fib[1] = 1

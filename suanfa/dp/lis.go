@@ -1,13 +1,15 @@
 package dp
 
-import "fmt"
+import (
+	"fmt"
+)
 
-//求数组的最长递增子序列 (lis)
+//求数组的最长递增子序列 (lis)  1.滑动窗口法 2.动态规划
 //另一种解法: 拷贝数组并排序, 转化为求最长公共子序列lcs 的 长度
 //状态转移方程:
 // d(i) = max{d(j)+1, 1} (当且仅当  j < i , arr[j] < arr[i])
 
-// ﻿用大白话解释就是，想要求d(i)，就把i前面的各个子序列中，
+// 用大白话解释就是，想要求d(i)，就把i前面的各个子序列中，
 // 最后一个数不大于A[i]的序列长度加1，然后取出最大的长度即为d(i)。
 // 当然了，有可能i前面的各个子序列中最后一个数都大于A[i]，那么d(i)=1， 即它自身成为一个长度为1的子序列。
 
@@ -38,4 +40,24 @@ func lisLength(arr []int, length int) {
 	}
 
 	fmt.Println(max)
+}
+
+func lisLengthWindow(arr []int) int {
+	if len(arr) <= 1 {
+		return len(arr)
+	}
+	// count 为当前元素峰值，ans为最大峰值
+	count := 1
+	ans := 1
+	for i := 0; i < len(arr)-1; i++ {
+		if arr[i+1] > arr[i] {
+			count++
+		} else {
+			count = 1
+		}
+		if count > ans {
+			ans = count
+		}
+	}
+	return ans
 }
