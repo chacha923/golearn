@@ -23,6 +23,7 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 }
 
 // 二叉树的右视图
+// 层次遍历
 func rightSideView(root *TreeNode) []int {
 	if root == nil {
 		return nil
@@ -34,12 +35,13 @@ func rightSideView(root *TreeNode) []int {
 	for len(q) != 0 {
 		size := len(q)
 		for i := 0; i < size; i++ {
-			// 取最后一个加入到结果集
 			v := q[0]
 			q = q[1:]
+			// 取最后一个加入到结果集
 			if i == size-1 {
 				ans = append(ans, v.Val)
 			}
+			// 左右孩子进队列
 			if v.Left != nil {
 				q = append(q, v.Left)
 			}
@@ -89,8 +91,9 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 	if len(preorder) == 0 {
 		return nil
 	}
+	// 取出根节点
 	root := &TreeNode{Val: preorder[0]}
-	var index int
+	var index int // 保存根节点在中序遍历数组的下标
 	// 在中序遍历找root
 	for i := range inorder {
 		if inorder[i] == preorder[0] {
@@ -102,4 +105,65 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 	root.Left = buildTree(preorder[1:index+1], inorder[:index])
 	root.Right = buildTree(preorder[index+1:], inorder[index+1:])
 	return root
+}
+
+// 给定一个二叉树，原地将它展开为一个单链表。靠右
+// 	  1
+//   / \
+//  2   5
+// / \   \
+// 3   4   6
+// 展开
+// 1
+//  \
+//   2
+//    \
+//     3
+//      \
+//       4
+//        \
+//         5
+//          \
+//           6
+// 利用后序遍历
+func flatten(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	flatten(root.Left)
+	flatten(root.Right)
+	//将右子树挂到 左子树的最右边
+	//再将整个左子树挂到根节点的右边
+	if root.Left != nil {
+		pre := root.Left // 左子树
+		for pre.Right != nil {
+			pre = pre.Right // 左子树最右节点
+		}
+		pre.Right = root.Right // 右子树拼到左子树最右边
+		root.Right = root.Left // 左子树挂到右边
+		root.Left = nil        // 左边置为空
+	}
+	root = root.Right
+	return
+}
+
+// 反向前序遍历
+var pre *TreeNode
+
+func flatten1(root *TreeNode) {
+	pre = nil
+	helper(root)
+}
+
+func helper(root *TreeNode) {
+	if root == nil {
+		return
+	}
+	helper(root.Right)
+	helper(root.Left)
+	//右节点-左节点-根节点 这种顺序正好跟前序遍历相反
+	//用pre节点作为媒介，将遍历到的节点前后串联起来
+	root.Left = nil
+	root.Right = pre
+	pre = root
 }

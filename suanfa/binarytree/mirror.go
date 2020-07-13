@@ -10,12 +10,8 @@ func MirrorRecursively(root *TreeNode) {
 	}
 
 	swapLRNode(root)
-	if root.Left != nil {
-		MirrorRecursively(root.Left)
-	}
-	if root.Right != nil {
-		MirrorRecursively(root.Right)
-	}
+	MirrorRecursively(root.Left)
+	MirrorRecursively(root.Right)
 }
 
 // 交换左右孩子值
