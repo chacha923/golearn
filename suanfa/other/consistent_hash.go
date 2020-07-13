@@ -1,11 +1,11 @@
 package other
 
 import (
-	"sync"
-	"strconv"
+	"fmt"
 	"hash/crc32"
 	"sort"
-	"fmt"
+	"strconv"
+	"sync"
 )
 
 const (
@@ -20,7 +20,7 @@ func (c HashRing) Len() int {
 }
 
 //比较两个hashring上的value大小
-func (c HashRing) Less(i, j int) bool {
+func (c HashRing) less(i, j int) bool {
 	return c[i] < c[j]
 }
 
@@ -30,7 +30,7 @@ func (c HashRing) Swap(i, j int) {
 }
 
 type Node struct {
-	Id       int	//id 必须唯一性
+	Id       int //id 必须唯一性
 	Ip       string
 	Port     int
 	HostName string
@@ -49,11 +49,11 @@ func NewNode(id int, ip string, port int, name string, weight int) *Node {
 }
 
 type Consistent struct {
-	Nodes     map[uint32]Node		//保存全部节点
-	numReps   int					//副本数量, 表示一个物理节点, 在consistent上虚拟为n个节点
-	Resources map[int]bool			//记录物理节点是否存在的map, key为节点id
-	ring      HashRing				//哈希环
-	sync.RWMutex					//读写锁
+	Nodes        map[uint32]Node //保存全部节点
+	numReps      int             //副本数量, 表示一个物理节点, 在consistent上虚拟为n个节点
+	Resources    map[int]bool    //记录物理节点是否存在的map, key为节点id
+	ring         HashRing        //哈希环
+	sync.RWMutex                 //读写锁
 }
 
 func NewConsistent() *Consistent {
@@ -70,14 +70,14 @@ func (c *Consistent) Add(node *Node) bool {
 	c.Lock()
 	defer c.Unlock()
 
-	if _, ok := c.Resources[node.Id]; ok {	//如果节点id存在, 那么不再添加
+	if _, ok := c.Resources[node.Id]; ok { //如果节点id存在, 那么不再添加
 		return false
 	}
 
 	count := c.numReps * node.Weight
 	for i := 0; i < count; i++ {
 		str := c.joinStr(i, node)
-		c.Nodes[c.hashStr(str)] = *(node)	//每个虚拟节点生成hash值, 加入c.Nodes
+		c.Nodes[c.hashStr(str)] = *(node) //每个虚拟节点生成hash值, 加入c.Nodes
 	}
 
 	c.Resources[node.Id] = true
@@ -129,7 +129,7 @@ func (c *Consistent) search(hash uint32) int {
 			return i
 		}
 	} else {
-		return len(c.ring) - 1	//查找失败, hash值落到c.ring上最后一个节点
+		return len(c.ring) - 1 //查找失败, hash值落到c.ring上最后一个节点
 	}
 }
 
