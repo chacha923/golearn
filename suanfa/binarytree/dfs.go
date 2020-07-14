@@ -2,6 +2,8 @@ package binarytree
 
 import "fmt"
 
+// 非递归的前中后序遍历
+
 //1.首先将根节点放入队列中。
 //2.从队列中取出第一个节点，并检验它是否为目标。
 //  如果找到目标，则结束搜寻并回传结果。
@@ -98,4 +100,22 @@ func PostOrder1(root *TreeNode) {
 		}
 	}
 	return
+}
+
+// 左叶子之和
+func sumOfLeftLeaves(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var ans int
+	if root.Left != nil && root.Left.Left == nil && root.Left.Right == nil {
+		ans += root.Left.Val
+	}
+	if root.Left != nil {
+		ans += sumOfLeftLeaves(root.Left)
+	}
+	if root.Right != nil {
+		ans += sumOfLeftLeaves(root.Right)
+	}
+	return ans
 }
