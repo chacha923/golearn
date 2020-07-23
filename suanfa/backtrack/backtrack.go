@@ -82,3 +82,80 @@ func back(s string, pos int, cur []string, ans *[]string) {
 		cur = cur[:len(cur)-1]
 	}
 }
+
+// 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+// 解集不能包含重复的子集。
+func subsets(nums []int) [][]int {
+	track := make([]int, 0) // 记录当前走过的路径
+	res := new([][]int)     // 结果集
+	back1(nums, 0, res)
+}
+
+func back1(nums []int, track []int, start int, res *[][]int) {
+	*res = append(*res, track)
+	// 注意 i 从 start 开始递增
+	for i := start; i < len(nums); i++ {
+		//做选择
+		track = append(track, nums[i])
+		// 回溯
+		back1(nums, i+1, track, res)
+		// 撤销
+		track = track[:len(track)-1]
+	}
+	return
+}
+
+// 给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
+func pathSum(root *TreeNode, sum int) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+	path := make([]int, 0) // 储存路径value
+	res := new([][]int)    // 结果集
+	num := 0               // 和
+	back2(root, num, sum, path, res)
+	return *res
+}
+
+func back2(root *TreeNode, num int, sum int, path []int, res *[][]int) {
+	// 退出条件, num == sum, 访问到叶子节点
+	if root == nil {
+		if num == sum {
+			tmp := []int{}
+			tmp = append(tmp, path...)
+			*res = append(*res, tmp)
+		}
+		return
+	}
+	path = append(path, root.Val)
+	if root.Left == nil {
+		// 左子树空, 剪枝
+		back2(root.Right, num+root.Val, sum, path, res)
+	} else if root.Right == nil {
+		// 右子树空, 剪枝
+		back2(root.Left, num+root.Val, sum, path, res)
+	} else {
+		back2(root.Left, num+root.Val, sum, path, res)
+		back2(root.Right, num+root.Val, sum, path, res)
+	}
+	// 撤销
+	num -= path[len(path)-1]
+	path = path[:len(path)-1]
+}
+
+// 简化版, 只判断是否存在等于目标和的路径
+// 给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+func hasPathSum(root *TreeNode, sum int) bool {
+	if root == nil {
+		return false
+	}
+	// 叶子节点
+	if root.Left == nil && root.Right == nil {
+		if sum-root.Val == 0 {
+			return true
+		} else {
+			return false
+		}
+	}
+	return hasPathSum(root.Left, sum-root.Val) || hasPathSum(root.Right, sum-root.Val)
+}
