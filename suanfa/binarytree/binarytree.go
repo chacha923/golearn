@@ -167,3 +167,24 @@ func helper(root *TreeNode) {
 	root.Right = pre
 	pre = root
 }
+
+// 给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t 具有相同结构和节点值的子树。
+func isSubtree(s *TreeNode, t *TreeNode) bool {
+	if s == nil {
+		return false
+	}
+	return check(s, t) || isSubtree(s.Left, t) || isSubtree(s.Right, t)
+}
+
+func check(a, b *TreeNode) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	if a.Val == b.Val {
+		return check(a.Left, b.Left) && check(a.Right, b.Right)
+	}
+	return false
+}

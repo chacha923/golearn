@@ -1,7 +1,5 @@
 package binarytree
 
-import "fmt"
-
 // 非递归的前中后序遍历
 
 //1.首先将根节点放入队列中。
@@ -28,7 +26,6 @@ func PreOrder1(root *TreeNode) {
 		// 出栈, 开始操作
 		curr = stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
-		fmt.Println(curr.Val)
 		// 进栈, 注意栈的特性, 先进右后进左
 		if curr.Right != nil {
 			stack = append(stack, curr.Right)
@@ -56,7 +53,6 @@ func InOrder1(root *TreeNode) {
 		// 出栈
 		curr = stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
-		fmt.Println(curr.Val)
 		curr = curr.Right
 	}
 	return
@@ -94,7 +90,6 @@ func PostOrder1(root *TreeNode) {
 		}
 		// 遇到叶子节点, 出栈
 		if leftVisited && rightVisited {
-			fmt.Println(curr.Val)
 			m[curr] = struct{}{}
 			stack = stack[:len(stack)-1]
 		}
@@ -119,3 +114,55 @@ func sumOfLeftLeaves(root *TreeNode) int {
 	}
 	return ans
 }
+
+// 给定一棵二叉树，以逆时针顺序从根开始返回其边界。边界按顺序包括左边界、叶子结点和右边界而不包括重复的结点。 (结点的值可能重复)
+// dfs + 左右边界标记
+// 简单理解: 一个先序遍历, 给节点标记flag
+// https://leetcode-cn.com/problems/boundary-of-binary-tree/solution/er-cha-shu-de-bian-jie-by-leetcode/
+func boundaryOfBinaryTree(root *TreeNode) []int {
+	res = new([]int)
+	dfs1(root, true, true, res)
+	return res
+}
+
+func dfs1(node *TreeNode, leftBound, rightBound bool, res *[]int) {
+	if root == nil {
+		return
+	}
+	if leftBound {
+		*res = append(*res, node.Val)
+	} else if node.Left == nil && node.Right == nil {
+		*res = append(*res, node.Val)
+		return
+	}
+	dfs1(node.Left, leftBound, !leftBound && rightBound && node.Right == nil, res)
+	dfs1(node.Right, !rightBound && leftBound && node.Left == nil, rightBound, res)
+	if !leftBound && rightBound {
+		*res = append(*res, node.Val)
+	}
+}
+
+// class Solution {
+//     public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+//         List<Integer> res = new ArrayList<>();
+//         dfs(root, true, true, res);
+//         return res;
+//     }
+
+//     private void dfs(TreeNode node, boolean leftBound, boolean rightBound, List<Integer> res) {
+//         if (node == null) {
+//             return;
+//         }
+//         if (leftBound) {
+//             res.add(node.val);
+//         } else if (node.left == null && node.right == null) {
+//             res.add(node.val);
+//             return;
+//         }
+//         dfs(node.left, leftBound, !leftBound && rightBound && node.right == null, res);
+//         dfs(node.right, !rightBound && leftBound && node.left == null, rightBound, res);
+//         if (!leftBound && rightBound) {
+//             res.add(node.val);
+//         }
+//     }
+// }
