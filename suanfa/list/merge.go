@@ -13,8 +13,9 @@ func MergeLists(l1, l2 *ListNode) *ListNode {
 	if l1.Val < l2.Val {
 		l1.Next = MergeLists(l1.Next, l2)
 		return l1
+	} else if l1.Val >= l2.Val {
+		l2.Next = MergeLists(l1, l2.Next)
 	}
-	l2.Next = MergeLists(l1, l2.Next)
 	return l2
 }
 
