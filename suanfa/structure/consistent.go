@@ -9,6 +9,8 @@ import (
 	"sync"
 )
 
+// 一致性哈希
+
 type uints []uint32
 
 // Len returns the length of the uints array.
