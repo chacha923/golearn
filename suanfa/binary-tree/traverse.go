@@ -1,4 +1,4 @@
-package binarytree
+package binary_tree
 
 import (
 	"fmt"

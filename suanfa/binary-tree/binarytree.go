@@ -1,4 +1,4 @@
-package binarytree
+package binary_tree
 
 // 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 // 所有节点的值都是唯一的。

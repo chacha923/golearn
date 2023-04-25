@@ -1,4 +1,4 @@
-package binarytree
+package binary_tree
 
 // 判断二叉树是否对称(镜像)
 func isSymmetric(root *TreeNode) bool {

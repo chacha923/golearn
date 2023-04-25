@@ -1,4 +1,4 @@
-package binarytree
+package binary_tree
 
 // 根据前序遍历, 中序遍历构建二叉树
 func buildTree(preorder []int, inorder []int) *TreeNode {
