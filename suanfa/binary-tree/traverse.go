@@ -8,6 +8,11 @@ import (
 )
 
 // 遍历模板
+// 遍历是很多能力的基础
+
+// 前序：根左右
+// 中序：左根右
+// 后序：左右根
 
 //递归前序遍历
 func PreOrder(root *TreeNode) {
@@ -15,7 +20,7 @@ func PreOrder(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	fmt.Println(root.Val)
+	fmt.Println(root.Val) // 这里可以对根节点做任何事情，指当前子树的根节点，每个节点都有可能是子树的根节点
 	PreOrder(root.Left)
 	PreOrder(root.Right)
 }

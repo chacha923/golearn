@@ -1,19 +1,20 @@
 package list
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
-var head *ListNode
+var head *Node
+
 func init() {
-	head = NewListNode(1)
-	head.Next = NewListNode(2)
-	head.Next.Next = NewListNode(3)
-	head.Next.Next.Next = NewListNode(4)
-	head.Next.Next.Next.Next = NewListNode(5)
-	head.Next.Next.Next.Next.Next = NewListNode(6)
-	head.Next.Next.Next.Next.Next.Next = NewListNode(7)
+	head = NewNode(1)
+	head.Append(2)
+	head.Append(3)
+	head.Append(4)
+	head.Append(5)
+	head.Append(6)
+	head.Append(7)
 }
 
 func TestReverse(t *testing.T) {
@@ -22,4 +23,33 @@ func TestReverse(t *testing.T) {
 		fmt.Println(newHead.Val)
 		newHead = newHead.Next
 	}
+}
+
+func TestDeleteDuplicates2(t *testing.T) {
+	// 构造链表
+	head := NewNode(1)
+	head.Append(1)
+	head.Append(1)
+	head.Append(2)
+	head.Append(5)
+
+	head.Print()
+
+	var newHead = deleteDuplicates2(head)
+	fmt.Println("result1")
+	newHead.Print()
+
+	head = NewNode(1)
+	head.Append(2)
+	head.Append(3)
+	head.Append(3)
+	head.Append(4)
+	head.Append(4)
+	head.Append(5)
+	head.Print()
+
+	newHead = deleteDuplicates2(head)
+	fmt.Println("result2")
+	newHead.Print()
+
 }

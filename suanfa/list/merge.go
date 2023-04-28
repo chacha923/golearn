@@ -3,7 +3,7 @@ package list
 import "sort"
 
 // 合并两个有序链表 递归法
-func MergeLists(l1, l2 *ListNode) *ListNode {
+func MergeLists(l1, l2 *Node) *Node {
 	if l1 == nil {
 		return l2
 	}
@@ -20,8 +20,8 @@ func MergeLists(l1, l2 *ListNode) *ListNode {
 }
 
 // 合并两个有序链表 迭代法
-func MergeLists2(l1, l2 *ListNode) *ListNode {
-	dummy := &ListNode{Val: -1}
+func MergeLists2(l1, l2 *Node) *Node {
+	dummy := &Node{Val: -1}
 	prev := dummy
 	for l1 != nil && l2 != nil {
 		if l1.Val < l2.Val {
@@ -73,11 +73,12 @@ func MergeRange(intervals [][]int) [][]int {
 
 // 两两交换链表中的节点
 // 给定 1->2->3->4, 你应该返回 2->1->4->3.
-func SwapPairs(head *ListNode) {
+func SwapPairs(head *Node) *Node {
 	if head == nil || head.Next == nil {
 		return head
 	}
-	dummy := NewListNode(-1)
+	// 因为 head 会发生移动，用一个 dummy 节点使 next 永远指向第一个节点
+	dummy := NewEmptyNode()
 	dummy.Next = head
 	prevNode := dummy
 	for head != nil && head.Next != nil {

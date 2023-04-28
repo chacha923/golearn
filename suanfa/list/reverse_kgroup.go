@@ -6,12 +6,13 @@ package list
 // 当 k = 3 时，应当返回: 3->2->1->4->5
 // 原地反转, 空间复杂度O(1)
 // https://leetcode-cn.com/problems/reverse-nodes-in-k-group/solution/tu-jie-kge-yi-zu-fan-zhuan-lian-biao-by-user7208t/
-func reverseKGroup(head *ListNode, k int) *ListNode {
+func reverseKGroup(head *Node, k int) *Node {
 	if head == nil {
 		return nil
 	}
-	dummy := &ListNode{}
+	dummy := NewEmptyNode()
 	dummy.Next = head // dummy next 永远指向头结点
+	// 需要两个临时指针，跨度为 k
 	pre := dummy
 	end := dummy
 
@@ -39,13 +40,13 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 }
 
 // 用栈实现k个一组翻转链表, 空间复杂度O(k), 用改变链表指针域的方式
-func reverseKGroupWithStack(head *ListNode, k int) *ListNode {
+func reverseKGroupWithStack(head *Node, k int) *Node {
 	if head == nil {
 		return nil
 	}
-	dummyHead := &ListNode{Next: head} // next域永远指向当前头节点
-	preNode := dummyHead               // 临时指针
-	stack := make([]*ListNode, 0)      // 临时栈
+	dummyHead := &Node{Next: head} // next域永远指向当前头节点
+	preNode := dummyHead           // 临时指针
+	stack := make([]*Node, 0)      // 临时栈
 
 	for head != nil {
 		count := 0
@@ -71,12 +72,13 @@ func reverseKGroupWithStack(head *ListNode, k int) *ListNode {
 }
 
 // k个一组翻转链表, 直接修改节点值
-func reverseKGroupWithChangeValue(head *ListNode, k int) *ListNode {
+// 比较作弊，一般不允许改变值域
+func reverseKGroupWithChangeValue(head *Node, k int) *Node {
 	if head == nil {
 		return nil
 	}
 	stack := make([]int, 0) // 临时栈
-	dummy := new(ListNode)
+	dummy := NewEmptyNode()
 	dummy.Next = head
 	cur := head
 	for cur != nil {

@@ -23,8 +23,11 @@ func binarySearch(array []int, key int) int {
 	return -1
 }
 
+// 递归的二分查找
+// left 左下标，right 右下标，将在 array 的左右下标范围内查找
 func binarySearch2(array []int, left, right int, target int) int {
-	mid := (left + right) / 2
+	// mid := (left + right) / 2
+	var mid = left + (right-left)/2
 	if left <= right {
 		if array[mid] == target {
 			return mid

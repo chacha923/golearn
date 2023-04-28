@@ -16,3 +16,7 @@ func TestBinSearch(t *testing.T) {
 func TestBinarySearch2(t *testing.T) {
 	fmt.Println(binarySearch2(array, 0, len(array)-1, 100))
 }
+
+func TestMySqrt(t *testing.T) {
+	fmt.Println(mySqrt(8))
+}
