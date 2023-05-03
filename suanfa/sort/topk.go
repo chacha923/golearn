@@ -34,6 +34,7 @@ func getLeastNumbersWithFastSort(arr []int, k int) []int {
 	return nil
 }
 
+// 快速排序 提前返回
 func fastSort(arr []int, start int, end int, k int) []int {
 	if start < end {
 		i := start
@@ -51,9 +52,8 @@ func fastSort(arr []int, start int, end int, k int) []int {
 				arr[i] = arr[j]
 				arr[j] = temp
 			}
-			//fmt.Println(arr)
 		}
-		//arr[i] = mid	//此时arr[i]有序
+		//arr[i] = mid	//此时arr[i] 已经位于最终位置了
 		if i == len(arr)-k {
 			return arr[i:]
 		}
