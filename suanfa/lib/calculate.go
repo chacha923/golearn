@@ -13,3 +13,10 @@ func Min(x, y int) int {
 	}
 	return y
 }
+
+func Less(x, y int) bool {
+	if x <= y {
+		return true
+	}
+	return false
+}
