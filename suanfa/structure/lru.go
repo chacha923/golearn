@@ -3,76 +3,87 @@ package structure
 import "golearn/suanfa/list"
 
 // hashmap + 双向链表 实现lru
+// hashmap 用来保存数据
+// 双向链表保存数据的访问顺序
+// 最近访问的数据放在链表头，最少访问的数据放在链表尾。链表节点中存储键值对信息。(这里粗暴 直接存链表节点的指针)
+// 使用 HashMap 来存储键值对信息以及对应的节点在链表中的位置。
 type LRUCache struct {
-	limit   int
-	HashMap map[int]*list.DequeNode
-	head    *list.DequeNode
-	end     *list.DequeNode
+	capacity int                         // 容量
+	size     int                         // 当前大小
+	hashMap  map[string]*list.DoubleNode // 存储数据，key：双向链表节点 key
+	head     *list.DoubleNode            // dummy 节点永远指向链表头，移动时不用考虑边界
+	tail     *list.DoubleNode            // dummy 节点永远指向链表尾
 }
 
-func Constructor(cap int) LRUCache {
-	lruCache := LRUCache{limit: cap}
-	lruCache.HashMap = make(map[int]*list.DequeNode, cap)
+func NewLRUCache(cap int) *LRUCache {
+	var head = list.NewEmptyDoubleNode()
+	var tail = list.NewEmptyDoubleNode()
+	lruCache := &LRUCache{
+		capacity: cap,
+		size:     0,
+		head:     head,
+		tail:     tail,
+	}
+	lruCache.hashMap = make(map[string]*list.DoubleNode, cap)
+
 	return lruCache
 }
 
-func (l *LRUCache) Get(key int) int {
-	if v, ok := l.HashMap[key]; ok {
-		l.refreshNode(v)
+func (l *LRUCache) Get(key string) int {
+	if v, ok := l.hashMap[key]; ok {
+		// 读到了，顺序移到追前面
+		l.moveToHead(v)
 		return v.Val
-	} else {
-		return -1
 	}
+	return -1
 }
 
-func (l *LRUCache) Put(key int, val int) {
-	if v, ok := l.HashMap[key]; !ok {
-		if len(l.HashMap) >= l.limit {
-			oldKey := l.removeNode(l.head) //删链表
-			delete(l.HashMap, key)         //删hash表
+func (l *LRUCache) Put(key string, val int) {
+	if v, ok := l.hashMap[key]; !ok {
+		// key不存在，先插，再维护
+		var node = list.NewDoubleNodeWithKey(key, val)
+		l.hashMap[key] = node
+		l.size += 1
+
+		// 超了，删除最旧的
+		if l.size > l.capacity {
+			toRemoved := l.removeTail()      //删链表
+			delete(l.hashMap, toRemoved.Key) //删hash表
+			l.size -= 1
 		}
-		node := &list.DequeNode{Key: key, Val: val}
-		l.addNode(node)
-		l.HashMap[key] = node
 	} else {
+		// key 存在，刷新
 		v.Val = val
-		l.refreshNode(v)
+		l.moveToHead(v)
 	}
 }
 
-// 刷新, 把一个节点插到链表头
-func (l *LRUCache) refreshNode(node *list.DequeNode) {
+// 每次 put 或 get 已存在的key，刷新, 把一个节点插到链表头
+func (l *LRUCache) moveToHead(node *list.DoubleNode) {
 	if node == nil {
 		return
 	}
 	l.removeNode(node)
-	l.addNode(node)
+	l.addToHead(node)
+}
+
+// 将新节点插到最前头
+func (l *LRUCache) addToHead(node *list.DoubleNode) {
+	node.Prev = l.head
+	node.Next = l.head.Next
+	l.head.Next.Prev = node
+	l.head.Next = node
 }
 
 // 删除节点
-func (l *LRUCache) removeNode(node *list.DequeNode) int {
-	if node == l.end {
-		l.end = l.end.pre
-		l.end.next = nil
-	} else if node == l.head {
-		l.head = l.head.Next
-		l.head.pre = nil
-	} else {
-		node.Pre.Next = node.Next
-		node.Next.Pre = node.Pre
-	}
-	return node.Key
+func (l *LRUCache) removeNode(node *list.DoubleNode) {
+	node.Prev.Next = node.Next
+	node.Next.Prev = node.Prev
 }
 
-// 插到最前头
-func (l *LRUCache) addNode(node *list.DequeNode) int {
-	if l.end != nil {
-		l.end.next = node
-		node.Pre = l.end
-		node.Next = nil
-	}
-	l.end = node
-	if l.nead == nil {
-		l.head = node
-	}
+// 删除最后一个节点，并返回
+func (l *LRUCache) removeTail() *list.DoubleNode {
+	node := l.tail.Prev
+	l.removeNode(node)
+	return node
 }

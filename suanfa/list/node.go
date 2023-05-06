@@ -69,6 +69,7 @@ func (cls *Node) Reverse(val int) {
 // 双向链表节点
 type DoubleNode struct {
 	// 数据域
+	Key string // 键值对
 	Val int
 	// 指针域
 	Next *DoubleNode // 后一个
@@ -77,6 +78,14 @@ type DoubleNode struct {
 
 func NewDoubleNode(val int) *DoubleNode {
 	return &DoubleNode{Val: val}
+}
+
+func NewDoubleNodeWithKey(key string, val int) *DoubleNode {
+	return &DoubleNode{Key: key, Val: val}
+}
+
+func NewEmptyDoubleNode() *DoubleNode {
+	return &DoubleNode{Val: math.MinInt64}
 }
 
 // 带使用频率的双端队列节点, lfu

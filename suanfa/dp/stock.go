@@ -30,6 +30,6 @@ func maxProfit(prices []int) int {
 }
 
 // 最简单的一次遍历, 转化为等价问题, 只求结果不能得过程
-func maxProfitSimple(prices []int) int {
+// func maxProfitSimple(prices []int) int {
 
-}
+// }
