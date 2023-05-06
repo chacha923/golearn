@@ -1,4 +1,4 @@
-package lib
+package structure
 
 import "testing"
 

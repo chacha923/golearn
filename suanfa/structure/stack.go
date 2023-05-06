@@ -1,4 +1,4 @@
-package lib
+package structure
 
 // 用切片模拟一个栈，下标大的元素靠近栈顶
 type Stack struct {

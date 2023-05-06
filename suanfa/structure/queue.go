@@ -1,4 +1,4 @@
-package lib
+package structure
 
 // 用切片模拟一个普通的 FIFO 队列
 // 下标小的为队头，下标大的为队尾

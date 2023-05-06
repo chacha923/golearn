@@ -24,18 +24,24 @@ func binarySearch(array []int, key int) int {
 }
 
 // 递归的二分查找
+
+func binarySearch2(array []int, key int) int {
+	return binarySearchRecursive(array, 0, len(array)-1, key)
+}
+
 // left 左下标，right 右下标，将在 array 的左右下标范围内查找
-func binarySearch2(array []int, left, right int, target int) int {
-	// mid := (left + right) / 2
-	var mid = left + (right-left)/2
-	if left <= right {
-		if array[mid] == target {
-			return mid
-		} else if target < array[mid] {
-			return binarySearch2(array, left, mid-1, target)
-		} else {
-			return binarySearch2(array, mid+1, right, target)
-		}
+func binarySearchRecursive(array []int, left, right int, target int) int {
+	// 边界条件
+	if left > right {
+		return -1
 	}
-	return -1
+	var mid = left + (right-left)/2 // 防止溢出
+	if array[mid] == target {
+		return mid
+	}
+	if array[mid] < target {
+		return binarySearchRecursive(array, mid+1, right, target)
+	}
+	//  array[mid] > target
+	return binarySearchRecursive(array, left, mid-1, target)
 }
