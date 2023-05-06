@@ -1,9 +1,45 @@
 package dp
 
-import "golearn/suanfa/lib"
+import (
+	"golearn/suanfa/lib"
+)
 
 // 最长回文子串
 // 动态规划方法, P(i,j) = true (子串Si-Sj是回文) | false 其他情况
+// 对于一个子串而言, 如果它是回文串，并且长度大于 22，那么将它首尾的两个字母去除之后，它仍然是个回文串
+// P(i,j)=P(i+1,j−1)∧(Si​==Sj​)  我们用 P(i,j)P(i,j) 表示字符串 ss 的第 ii 到 jj 个字母组成的串（下文表示成 s[i:j]s[i:j]）是否为回文串
+// 翻译：如果 i 到 j 是回文，那么必须满足两个条件：1. i+1 到 j-1 是回文 2. s[i] == s[j]，需要倒过来，逐渐缩小范围
+
+func longestPalindromeWithRecur(s string) string {
+	var strLen = len(s)
+	if strLen < 2 {
+		return s
+	}
+	var matLen = 1 // 记录最大的回文长度
+	var begin = 0  // 记录最大回文的起始位置
+	var end = 0    // 记录最大回文的结束位置
+	// 初始化 dp，长度为 1 的子串全部置为 true
+	var dp = make([][]bool, strLen)
+	for i := 0; i < strLen; i++ {
+		dp[i] = make([]bool, strLen)
+		dp[i][i] = true
+	}
+
+	for r := 1; r <= strLen; r++ { // 右边界
+		for l := 0; l < r; l++ { // 左边界
+			if s[l] == s[r] && ((r-l <= 2) || dp[l+1][r-1]) { // i 到 j 为回文的条件，特殊处理'aba' 'aa' 都是回文
+				dp[l][r] = true
+				// 更新最大回文子串的长度和起始位置
+				if r-l+1 > matLen {
+					matLen = r - l + 1
+					begin = l
+					end = r
+				}
+			}
+		}
+	}
+	return s[begin : end+1]
+}
 
 // 中心展开法
 // 事实上，只需使用恒定的空间，我们就可以在 O(n^2)O(n2) 的时间内解决这个问题。
