@@ -1,5 +1,7 @@
 package search
 
+import binary_tree "golearn/algorithm/binary-tree"
+
 //二分查找，返回key值在数组中的下标，否则返回-1
 //要求数组有序
 //时间复杂度 logn
@@ -53,7 +55,7 @@ func binarySearchRecursive(array []int, left, right int, target int) int {
 // 如果右子树双向链表的第一个节点不为空，将其与当前节点链接。
 // 返回链表的头节点。
 // 该算法的时间复杂度为 O(n)
-func bst2DoubleList(root *TreeNode) *TreeNode {
+func bst2DoubleList(root *binary_tree.TreeNode) *binary_tree.TreeNode {
 	// 双向链表也可以用 TreeNode 结构体表示节点，left -> prev, right -> next
 	// 返回的是双向链表就是完全退化后的二叉查找树
 	if root == nil {
