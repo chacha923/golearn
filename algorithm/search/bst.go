@@ -2,50 +2,59 @@ package search
 
 import binary_tree "golearn/algorithm/binary-tree"
 
-//二分查找，返回key值在数组中的下标，否则返回-1
-//要求数组有序
-//时间复杂度 logn
-func binarySearch(array []int, key int) int {
-	var left = 0
-	var right = len(array) - 1
+// 二叉搜索树
+type BST struct {
+	// 保存根节点，用于搜索
+	root *binary_tree.TreeNode
+}
 
-	for left <= right {
-		// Prevent (left + right) overflow
-		// var mid = (left + right) / 2
-		var mid = left + (right-left)/2 // 防止溢出
-		if array[mid] == key {
-			return mid
-		} else if array[mid] < key {
-			left = mid + 1
-		} else if array[mid] > key {
-			right = mid - 1
+func (cls *BST) Insert(data int) {
+	var newNode = binary_tree.NewTreeNode(data)
+	// 没有根，自己做根
+	if cls.root == nil {
+		cls.root = newNode
+		return
+	}
+	var current = cls.root
+	// 新节点应该插到哪个位置
+	for {
+		if data < current.Val {
+			// 往左走 找空位
+			if current.Left == nil {
+				current.Left = newNode
+				return
+			}
+			// 没空位 继续往左
+			current = current.Left
+		} else if data > current.Val {
+			// 往右走
+			if current.Right == nil {
+				current.Right = newNode
+				return
+			}
+			// 没空位，继续往右
+			current = current.Right
 		}
 	}
-	// End Condition: left > right
-	return -1
 }
 
-// 递归的二分查找
-
-func binarySearch2(array []int, key int) int {
-	return binarySearchRecursive(array, 0, len(array)-1, key)
-}
-
-// left 左下标，right 右下标，将在 array 的左右下标范围内查找
-func binarySearchRecursive(array []int, left, right int, target int) int {
-	// 边界条件
-	if left > right {
-		return -1
+func (cls *BST) Search(data int) bool {
+	if cls.root == nil {
+		return false
 	}
-	var mid = left + (right-left)/2 // 防止溢出
-	if array[mid] == target {
-		return mid
+	var current = cls.root
+	for current != nil {
+		if data < current.Val {
+			current = current.Left
+		}
+		if data > current.Val {
+			current = current.Right
+		}
+		if data == current.Val {
+			return true
+		}
 	}
-	if array[mid] < target {
-		return binarySearchRecursive(array, mid+1, right, target)
-	}
-	//  array[mid] > target
-	return binarySearchRecursive(array, left, mid-1, target)
+	return false
 }
 
 // 将左子树转换为双向链表。
