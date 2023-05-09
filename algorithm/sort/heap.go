@@ -165,6 +165,7 @@ func heapSort2(arr []int, i, end int) {
 	}
 	if arr[i] > arr[n] {
 		return
-	swap(i, n)
-	heapSort2(arr, n, end)
+		swap(i, n)
+		heapSort2(arr, n, end)
+	}
 }

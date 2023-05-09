@@ -1,12 +1,5 @@
 package binary_tree
 
-import (
-	"fmt"
-	"golearn/suanfa/sort"
-
-	"github.com/eapache/queue"
-)
-
 //遍历
 
 //递归前序遍历

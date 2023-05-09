@@ -1,6 +1,6 @@
 package binary_tree
 
-import "golearn/suanfa/lib"
+import "golearn/algorithm/util"
 
 //判断一颗二叉树树是不是平衡二叉树
 func IsBalance(root *TreeNode, depth *int) bool {
@@ -40,7 +40,7 @@ func MaxDepth(head *TreeNode) int {
 	}
 	left := MaxDepth(head.Left)
 	right := MaxDepth(head.Right)
-	return lib.Max(left, right) + 1 //注意退出条件
+	return util.Max(left, right) + 1 //注意退出条件
 }
 
 // 最小深度
@@ -55,5 +55,5 @@ func MinDepth(head *TreeNode) int {
 	if head.Left == nil && head.Right != nil {
 		return 1 + MinDepth(head.Right)
 	}
-	return lib.Min(MinDepth(head.Left), MinDepth(head.Right)) + 1
+	return util.Min(MinDepth(head.Left), MinDepth(head.Right)) + 1
 }

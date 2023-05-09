@@ -8,7 +8,7 @@ type MyCircularDeque struct {
 	rear     int
 }
 
-func Constructor(k int) MyCircularDeque {
+func NewMyCircularDeque(k int) MyCircularDeque {
 	return MyCircularDeque{
 		cache:    make([]int, k),
 		capacity: k,

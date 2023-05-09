@@ -23,7 +23,7 @@ func (p nodeArray) Len() int {
 	return len(p)
 }
 
-func (p nodeArray) less(i, j int) bool {
+func (p nodeArray) Less(i, j int) bool {
 	return p[i].spotValue < p[j].spotValue
 }
 

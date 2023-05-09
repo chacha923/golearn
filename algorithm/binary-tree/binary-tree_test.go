@@ -34,3 +34,8 @@ func init() {
 func TestMaxDeaph(t *testing.T) {
 	fmt.Println("max deaph is ", MaxDepth(head))
 }
+
+func TestMostLongPath(t *testing.T) {
+	var res = mostLongPath(head)
+	fmt.Print(res)
+}

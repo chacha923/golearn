@@ -2,7 +2,7 @@ package binary_tree
 
 import (
 	"fmt"
-	"golearn/suanfa/sort"
+	"golearn/algorithm/sort"
 
 	"github.com/eapache/queue"
 )

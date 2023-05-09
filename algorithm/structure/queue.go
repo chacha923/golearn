@@ -18,7 +18,8 @@ func (q *Queue[T]) Push(v T) {
 
 func (q *Queue[T]) Pop() T {
 	if len(q.data) == 0 {
-		return -1
+		var zero T
+		return zero
 	}
 	v := q.data[0]
 	q.data = q.data[1:]

@@ -17,6 +17,7 @@ func MirrorRecursively(root *TreeNode) {
 	}
 }
 
+// 左右孩子互换
 func swapLRNode(father *TreeNode) {
 	tmp := father.Left
 	father.Left = father.Right

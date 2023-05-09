@@ -23,3 +23,18 @@ func (s *Stack) Pop() int {
 	s.data = s.data[:len(s.data)-1]
 	return v
 }
+
+func (s *Stack) Len() int {
+	if s == nil {
+		return 0
+	}
+	return len(s.data)
+}
+
+// 注意，下标小的是栈底
+func (s *Stack) ToSlice() []int {
+	if s == nil {
+		return []int{}
+	}
+	return s.data
+}

@@ -10,8 +10,8 @@ func Constructor() MinStack {
 	return MinStack{[]int{}, []int{}}
 }
 
-func (this *Minstack) Push(x int) {
-	if len(this.stack) == 0 {
+func (this *MinStack) Push(x int) {
+	if len(this.minStack) == 0 {
 		this.dataStack = append(this.dataStack, x)
 		this.minStack = append(this.minStack, x)
 		return
@@ -28,7 +28,7 @@ func (this *Minstack) Push(x int) {
 }
 
 func (this *MinStack) Pop() {
-	this.stack = this.stack[:len(this.stack)-1]
+	this.dataStack = this.dataStack[:len(this.dataStack)-1]
 	this.minStack = this.minStack[:len(this.minStack)-1]
 }
 

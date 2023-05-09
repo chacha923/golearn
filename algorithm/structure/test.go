@@ -19,7 +19,7 @@ func TestStack(t *testing.T) {
 }
 
 func TestQueue(t *testing.T) {
-	var queue = NewQueue()
+	var queue = NewQueue[int]()
 	queue.Push(1)
 	queue.Push(2)
 	queue.Push(3)

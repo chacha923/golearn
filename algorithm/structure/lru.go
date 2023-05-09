@@ -1,6 +1,6 @@
 package structure
 
-import "golearn/suanfa/list"
+import "golearn/algorithm/list"
 
 // hashmap + 双向链表 实现lru
 // hashmap 用来保存数据

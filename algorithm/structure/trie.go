@@ -79,4 +79,5 @@ func (t *Trie) SearchNode(key string, limit int) (res []interface{}) {
 			}
 		}
 	}
+	return res
 }

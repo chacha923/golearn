@@ -17,7 +17,7 @@ type uints []uint32
 func (x uints) Len() int { return len(x) }
 
 // less returns true if element i is less than element j.
-func (x uints) less(i, j int) bool { return x[i] < x[j] }
+func (x uints) Less(i, j int) bool { return x[i] < x[j] }
 
 // Swap exchanges elements i and j.
 func (x uints) Swap(i, j int) { x[i], x[j] = x[j], x[i] }
