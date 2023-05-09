@@ -120,13 +120,14 @@ func sumOfLeftLeaves(root *TreeNode) int {
 // 简单理解: 一个先序遍历, 给节点标记flag
 // https://leetcode-cn.com/problems/boundary-of-binary-tree/solution/er-cha-shu-de-bian-jie-by-leetcode/
 func boundaryOfBinaryTree(root *TreeNode) []int {
-	res = new([]int)
-	dfs1(root, true, true, res)
+	var res = make([]int, 0)
+	dfs1(root, true, true, &res)
 	return res
 }
 
+// 递归 深度优先遍历
 func dfs1(node *TreeNode, leftBound, rightBound bool, res *[]int) {
-	if root == nil {
+	if node == nil {
 		return
 	}
 	if leftBound {
