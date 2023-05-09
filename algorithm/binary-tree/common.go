@@ -1,6 +1,6 @@
 package binary_tree
 
-import "golearn/suanfa/lib"
+import "golearn/algorithm/util"
 
 // 一些简单的练手
 // 树基本上都用递归思想
@@ -21,5 +21,5 @@ func getTreeDepth(root *TreeNode) int {
 	var leftDepth = getTreeDepth(root.Left)
 	var rightDepth = getTreeDepth(root.Right)
 
-	return lib.Max(leftDepth, rightDepth) + 1
+	return util.Max(leftDepth, rightDepth) + 1
 }
