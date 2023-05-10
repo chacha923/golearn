@@ -36,6 +36,11 @@ func TestMaxDeaph(t *testing.T) {
 }
 
 func TestMostLongPath(t *testing.T) {
-	var res = mostLongPath(head)
+	var res = FindLongestPath(head)
+	fmt.Print(res)
+}
+
+func TestFindLongestPath(t *testing.T) {
+	var res = FindLongestPath1(head)
 	fmt.Print(res)
 }

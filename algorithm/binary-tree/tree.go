@@ -9,7 +9,7 @@ var maxLenPath []int = make([]int, 0)
 var stack = structure.NewStack()
 
 // 打印二叉树的最长路径
-func mostLongPath(root *TreeNode) []int {
+func FindLongestPath(root *TreeNode) []int {
 	// 考虑用栈？
 	// 1. 不断做深度遍历，一旦到底了，开始考察栈中的元素
 
@@ -32,4 +32,19 @@ func dfsAndPutStack(root *TreeNode, stack *structure.Stack) {
 	dfsAndPutStack(root.Right, stack)
 	// 左右子树都找完了，出栈
 	stack.Pop()
+}
+
+// 不用辅助栈实现，就是把求最大深度的代码改一下
+func FindLongestPath1(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+
+	leftPath := FindLongestPath1(root.Left)
+	rightPath := FindLongestPath1(root.Right)
+
+	if len(leftPath) >= len(rightPath) {
+		return append(leftPath, root.Val)
+	}
+	return append(rightPath, root.Val)
 }
