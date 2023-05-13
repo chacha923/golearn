@@ -2,7 +2,7 @@ package list
 
 // 解决链表问题最好的办法是在脑中或者纸上把链表画出来
 
-//翻转链表
+// 翻转链表
 func Reverse(head *Node) *Node {
 	// 边界，节点数 <= 1
 	if head == nil || head.Next == nil {
@@ -86,7 +86,7 @@ func hasCycle(head *Node) bool {
 	return false
 }
 
-//得到链表倒数第n个节点
+// 得到链表倒数第n个节点
 func nthToLast(head *Node, n int) *Node {
 	if head == nil || n < 1 {
 		return nil
@@ -106,6 +106,28 @@ func nthToLast(head *Node, n int) *Node {
 		l2 = l2.Next
 	}
 	return l1
+}
+
+// 删除倒数第 n 个节点，返回头节点，解法很多
+// 1.先遍历得到长度，在位移
+// 2.双指针
+// 3.栈
+func removeNthFromEnd(head *Node, n int) *Node {
+	var dummy = NewEmptyNode()
+	var l = dummy
+	var r = head // 先走一步，后面好处理
+	// 快指针先走起来
+	for i := 0; i < n; i++ {
+		r = r.Next
+	}
+	// 快慢指针一起走，最终 l 为待删除节点的前序节点，倒数 n+1 个节点
+	for r != nil {
+		l = l.Next
+		r = r.Next
+	}
+	//删 l.next, 这里需要把 l 停在待删除节点的前序节点
+	l.Next = l.Next.Next
+	return dummy.Next
 }
 
 // 返回倒数第k个节点,  使用dummy节点
@@ -468,26 +490,4 @@ func reversePrint(head *Node) []int {
 		res = append(res, top)
 	}
 	return res
-}
-
-// 删除倒数第 n 个节点，返回头节点，解法很多
-// 1.先遍历得到长度，在位移
-// 2.双指针
-// 3.栈
-func removeNthFromEnd(head *Node, n int) *Node {
-	var dummy = NewEmptyNode()
-	var l = dummy
-	var r = head // 先走一步，后面好处理
-	// 快指针先走起来
-	for i := 0; i < n; i++ {
-		r = r.Next
-	}
-	// 快慢指针一起走，最终 l 为待删除节点的前序节点，倒数 n+1 个节点
-	for r != nil {
-		l = l.Next
-		r = r.Next
-	}
-	//删 l.next, 这里需要把 l 停在待删除节点的前序节点
-	l.Next = l.Next.Next
-	return dummy.Next
 }

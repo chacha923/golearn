@@ -1,6 +1,6 @@
 package binary_tree
 
-//二叉树节点
+// 二叉树节点
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -40,7 +40,7 @@ func (cls *TreeNode) SetRight(val int) {
 }
 
 // n叉树节点
-type Node struct {
+type NTreeNode struct {
 	Val      int
-	Children []*Node
+	Children []*NTreeNode
 }

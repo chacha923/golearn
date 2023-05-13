@@ -20,6 +20,12 @@ import "golearn/algorithm/structure"
 // 每一层的宽度被定义为两个端点（该层最左和最右的非空节点，两端点间的null节点也计入长度）之间的长度。
 // 这题比较特殊，需要事先按层次遍历给二叉树标记下标，
 func widthOfBinaryTree(root *TreeNode) int {
+	// 节点指针+下标构成的元组, golang没有元组用结构体代替
+	type Item struct {
+		idx int
+		*TreeNode
+	}
+
 	if root == nil {
 		return 0
 	}
@@ -44,31 +50,31 @@ func widthOfBinaryTree(root *TreeNode) int {
 	return ans
 }
 
-// 层次遍历
-func levelOrder(root *TreeNode) []int {
-	if root == nil {
-		return []int{}
+// 返回二叉树的第k层节点
+// 同样是 bfs 思想，就是每次记录层数，记录当前队列长度，卡住每次循环的出队次数
+func KthLevel(root *TreeNode, k int) []int {
+	if root == nil || k < 1 {
+		return nil
 	}
-	var res []int
+	var currentLevel = 1
+	var result = make([]int, 0)
 	var queue = structure.NewQueue[*TreeNode]()
 	queue.Push(root)
-	// 直到队列清空，遍历完成
 	for queue.Len() > 0 {
-		var node = queue.Pop()
-		// 处理当前节点，孩子进队
-		if node.Left != nil {
-			queue.Push(node.Left)
+		var currentSize = queue.Len()
+		for i := 0; i < currentSize; i++ {
+			var node = queue.Pop()
+			if currentLevel == k {
+				result = append(result, node.Val)
+			}
+			if node.Left != nil {
+				queue.Push(node.Left)
+			}
+			if node.Right != nil {
+				queue.Push(node.Right)
+			}
 		}
-		if node.Right != nil {
-			queue.Push(node.Right)
-		}
-		res = append(res, node.Val)
+		currentLevel++
 	}
-	return res
-}
-
-// 节点指针+下标构成的元组, golang没有元组用结构体代替
-type Item struct {
-	idx int
-	*TreeNode
+	return result
 }

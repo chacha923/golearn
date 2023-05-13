@@ -1,6 +1,9 @@
 package binary_tree
 
-import "fmt"
+import (
+	"fmt"
+	"golearn/algorithm/util"
+)
 
 // 非递归的前中后序遍历
 
@@ -153,4 +156,30 @@ func boundary(node *TreeNode, leftBound, rightBound bool, res *[]int) {
 	if !leftBound && rightBound {
 		*res = append(*res, node.Val)
 	}
+}
+
+// 求最大深度
+func MaxDepth(head *TreeNode) int {
+	if head == nil {
+		return 0
+	}
+	left := MaxDepth(head.Left)
+	right := MaxDepth(head.Right)
+	//注意退出条件，取左右子树的最大深度，再加上 1（本节点）
+	return util.Max(left, right) + 1
+}
+
+// 最小深度
+func MinDepth(head *TreeNode) int {
+	if head == nil {
+		return 0
+	}
+	// null节点不参与比较
+	if head.Left != nil && head.Right == nil {
+		return 1 + MinDepth(head.Left)
+	}
+	if head.Left == nil && head.Right != nil {
+		return 1 + MinDepth(head.Right)
+	}
+	return util.Min(MinDepth(head.Left), MinDepth(head.Right)) + 1
 }

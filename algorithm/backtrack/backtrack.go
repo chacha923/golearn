@@ -1,9 +1,16 @@
 package backtrack
 
 import (
+	binary_tree "golearn/algorithm/binary-tree"
 	"strconv"
 	"strings"
 )
+
+// 回溯算法也是 dfs 思想的应用
+//「回溯」就是 深度优先遍历 状态空间的过程中发现的特有的现象，程序会回到以前访问过的结点。
+// 而程序在回到以前访问过的结点的时候，就需要将状态变量恢复成为第一次来到该结点的值。
+
+// 在代码层面上，在递归方法结束以后，执行递归方法之前的操作的 逆向操作 即可。
 
 // 括号生成, 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
 func generateParenthesis(n int) {
@@ -145,7 +152,7 @@ func back2(root *TreeNode, num int, sum int, path []int, res *[][]int) {
 
 // 简化版, 只判断是否存在等于目标和的路径
 // 给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
-func hasPathSum(root *TreeNode, sum int) bool {
+func hasPathSum(root *binary_tree.TreeNode, sum int) bool {
 	if root == nil {
 		return false
 	}
@@ -157,5 +164,6 @@ func hasPathSum(root *TreeNode, sum int) bool {
 			return false
 		}
 	}
+	// sum - 当前节点值，等于左子树或右子树的路径和，则找到
 	return hasPathSum(root.Left, sum-root.Val) || hasPathSum(root.Right, sum-root.Val)
 }

@@ -44,3 +44,8 @@ func TestFindLongestPath(t *testing.T) {
 	var res = FindLongestPath1(head)
 	fmt.Print(res)
 }
+
+func TestKthLevel(t *testing.T) {
+	var res = KthLevel(head, 3)
+	fmt.Print(res)
+}
