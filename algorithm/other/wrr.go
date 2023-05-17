@@ -1,5 +1,5 @@
 // wrr 负载均衡
-func other 
+package other
 
 import "sync"
 
@@ -7,7 +7,7 @@ import "sync"
 //cw int = 0  //当前调度的权值
 //gcd int = 2 //所有权重的最大公约数
 
-type Service interface{
+type Service interface {
 	GetWeight() int
 }
 
@@ -63,7 +63,7 @@ func (this *weightedRoundRobin) getMaxGcdForServices() int {
 	return this.gcd
 }
 
-func (this *weightedRoundRobin) getService() Service{
+func (this *weightedRoundRobin) getService() Service {
 	for {
 		if len(this.Services) == 0 {
 			return nil
@@ -72,7 +72,7 @@ func (this *weightedRoundRobin) getService() Service{
 		if this.lastId == 0 {
 			this.cw = this.cw - this.getMaxGcdForServices()
 			if this.cw <= 0 {
-				this.cw = this.this.getMaxWeight()
+				// this.cw = this.this.getMaxWeight()
 				if this.cw == 0 {
 					return nil
 				}

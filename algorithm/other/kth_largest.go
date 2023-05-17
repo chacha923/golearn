@@ -1,14 +1,16 @@
 package other
 
-import "container/heap"
+import (
+	"container/heap"
+)
 
-func findKthLargest(nums []int, k int) int{
+func findKthLargest(nums []int, k int) int {
 	// 建一个最小堆长度k, 返回堆顶元素
 	q := PriorityQueueInt{}
 	for i := range nums {
 		if len(q) <= k {
-			heap.Push(&q, nums[i])
-		}else {
+			heap.Push(&q, nums[i])
+		} else {
 			//如果nums[i] > 堆顶,  把堆顶pop, 插入num[i]
 			if nums[i] > q[q.Len()-1] {
 				heap.Pop(&q)
@@ -37,12 +39,12 @@ func (pq PriorityQueueInt) Swap(i, j int) {
 }
 
 // Push define
-func (pq *PriorityQueueInt) Push(int e) {
-	*pq = append(*pq, e)
+func (pq *PriorityQueueInt) Push(e any) {
+	*pq = append(*pq, e.(int))
 }
 
 // Pop define
-func (pq *PriorityQueueInt) Pop() interface{} {
+func (pq *PriorityQueueInt) Pop() any {
 	n := len(*pq)
 	item := (*pq)[n-1]
 	*pq = (*pq)[:n-1]

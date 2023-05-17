@@ -1,5 +1,10 @@
 package other
 
+import (
+	"fmt"
+	"sync"
+)
+
 // 寻找完美数
 // 对于一个 正整数，如果它和除了它自身以外的所有正因子之和相等，我们称它为“完美数”。
 func checkPerfectNumber(num int) bool {
@@ -85,7 +90,7 @@ func intersect(nums1 []int, nums2 []int) []int {
 	return nums1[0:k]
 }
 
-//  x 的 n 次幂函数。
+// x 的 n 次幂函数。
 func myPow(x float64, n int) float64 {
 	if x == 0 {
 		return 0
@@ -159,20 +164,20 @@ func removeElement(nums []int, val int) int {
 // 给定 nums = [0,1,2,2,3,0,4,2], val = 2,
 // 函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0, 4。
 // 注意这五个元素可为任意顺序。
-func removeElement(nums []int, val int) int {
-	if len(nums) == 0 {
-		return 0
-	}
-	i, j := 0, 0 //慢, 快,  慢指针只有在快指针访问到非val元素, 才往前走
-	for ; j < len(nums); j++ {
-		if nums[j] != val {
-			nums[i] = nums[j]
-			i++
-		}
-		// 快指针遇到val元素, 跳过一次循环
-	}
-	return i
-}
+// func removeElement(nums []int, val int) int {
+// 	if len(nums) == 0 {
+// 		return 0
+// 	}
+// 	i, j := 0, 0 //慢, 快,  慢指针只有在快指针访问到非val元素, 才往前走
+// 	for ; j < len(nums); j++ {
+// 		if nums[j] != val {
+// 			nums[i] = nums[j]
+// 			i++
+// 		}
+// 		// 快指针遇到val元素, 跳过一次循环
+// 	}
+// 	return i
+// }
 
 // 给定两个排序后的数组 A 和 B，其中 A 的末端有足够的缓冲空间容纳 B。 编写一个方法，将 B 合并入 A 并排序。
 // 初始化 A 和 B 的元素数量分别为 m 和 n。
@@ -235,4 +240,62 @@ func longestPalindrome(s string) int {
 		}
 	}
 	return length
+}
+
+func printDiamond(n int) {
+	if n%2 == 0 {
+		n = n + 1
+	}
+	// 打印上半部分
+	for i := 1; i <= n; i++ {
+		printLine(i, n)
+	}
+	// 打印下半部分菱形
+	for i := n - 2; i >= 1; i -= 2 {
+		printLine(i, n)
+	}
+}
+
+func printLine(i int, n int) string {
+	var s string
+	for j := 0; j < (n-i)/2; j++ {
+		s += " "
+	}
+	for j := 0; j < i; j++ {
+		s += "*"
+	}
+	return s
+}
+
+func printCross() {
+	// 10 个协程交替打印
+	var wg sync.WaitGroup
+	wg.Add(10)
+	var ch = make(chan int, 10)
+	// 起 10 个协程
+	for i := 0; i < 10; i++ {
+		go func() {
+			for {
+				select {
+				case num := <-ch:
+					fmt.Println(num)
+				default:
+				}
+			}
+		}()
+	}
+
+	// 打印 0 - 10, 每个数字打印 10 次
+	for n := 0; n < 11; n++ {
+		for i := 0; i < 10; i++ {
+			ch <- n
+		}
+		if n == 10 {
+			// 退出
+			for i := 0; i < 10; i++ {
+				wg.Done()
+			}
+		}
+	}
+	wg.Wait()
 }

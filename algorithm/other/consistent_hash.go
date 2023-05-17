@@ -14,17 +14,17 @@ const (
 
 type HashRing []uint32 //一个hashring包含 2^32 个节点, 索引为0~2^32-1
 
-//返回hashring的长度
+// 返回hashring的长度
 func (c HashRing) Len() int {
 	return len(c)
 }
 
-//比较两个hashring上的value大小
-func (c HashRing) less(i, j int) bool {
+// 比较两个hashring上的value大小
+func (c HashRing) Less(i, j int) bool {
 	return c[i] < c[j]
 }
 
-//交换hashring上下标i,j的元素值
+// 交换hashring上下标i,j的元素值
 func (c HashRing) Swap(i, j int) {
 	c[i], c[j] = c[j], c[i]
 }
@@ -37,7 +37,7 @@ type Node struct {
 	Weight   int
 }
 
-//创建一个节点
+// 创建一个节点
 func NewNode(id int, ip string, port int, name string, weight int) *Node {
 	return &Node{
 		Id:       id,
@@ -65,7 +65,7 @@ func NewConsistent() *Consistent {
 	}
 }
 
-//向consistent添加一个节点
+// 向consistent添加一个节点
 func (c *Consistent) Add(node *Node) bool {
 	c.Lock()
 	defer c.Unlock()
@@ -85,7 +85,7 @@ func (c *Consistent) Add(node *Node) bool {
 	return true
 }
 
-//根据虚拟节点的hash值排序
+// 根据虚拟节点的hash值排序
 func (c *Consistent) sortHashRing() {
 	c.ring = HashRing{}
 	for k := range c.Nodes {
@@ -94,7 +94,7 @@ func (c *Consistent) sortHashRing() {
 	sort.Sort(c.ring)
 }
 
-//创建join字符串, 用于生成hash值
+// 创建join字符串, 用于生成hash值
 func (c *Consistent) joinStr(i int, node *Node) string {
 	return node.Ip + "*" + strconv.Itoa(node.Weight) +
 		"-" + strconv.Itoa(i) +
@@ -106,7 +106,7 @@ func (c *Consistent) hashStr(key string) uint32 {
 	return crc32.ChecksumIEEE([]byte(key))
 }
 
-//根据key 求hash , 顺时针查找第一个虚拟节点, 那么key应该保存在这个虚拟节点对应的物理节点上
+// 根据key 求hash , 顺时针查找第一个虚拟节点, 那么key应该保存在这个虚拟节点对应的物理节点上
 func (c *Consistent) Get(key string) Node {
 	c.RLock()
 	defer c.RLock()
@@ -116,7 +116,7 @@ func (c *Consistent) Get(key string) Node {
 	return c.Nodes[c.ring[i]]
 }
 
-//根据hash值顺时针找到c.ring上第一个节点
+// 根据hash值顺时针找到c.ring上第一个节点
 func (c *Consistent) search(hash uint32) int {
 	i := sort.Search(len(c.ring), func(i int) bool {
 		return c.ring[i] >= hash
@@ -133,7 +133,7 @@ func (c *Consistent) search(hash uint32) int {
 	}
 }
 
-//删除一个节点
+// 删除一个节点
 func (c *Consistent) Remove(node *Node) {
 	c.Lock()
 	defer c.Unlock()
