@@ -3,5 +3,9 @@ package other
 import "testing"
 
 func TestPrintCross(t *testing.T) {
-	printCross()
+	printCross10()
+}
+
+func TestPrint01(t *testing.T) {
+	print01()
 }

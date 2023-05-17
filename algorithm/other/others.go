@@ -3,6 +3,7 @@ package other
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 )
 
 // 寻找完美数
@@ -267,35 +268,86 @@ func printLine(i int, n int) string {
 	return s
 }
 
-func printCross() {
+// 2 个协程交替打印 0 1
+func print01() {
+	var wg sync.WaitGroup
+	var ch = make(chan int, 1) // 必须有 buffer，否则最后一次循环会 hang 住
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		var count = 0
+		for {
+			if count == 5 {
+				return
+			}
+			select {
+			case num := <-ch:
+				fmt.Println(num)
+				count++
+				// 1 - num 为 0 时，下次打印 1， 为 1 时，下次打印 0
+				// 这里不能写死，因为不知道哪个协程消费了 ch
+				// 如果要严格控制两个协程轮流，用两个 channel 互相塞消息
+				ch <- 1 - num
+			default:
+			}
+		}
+	}()
+	go func() {
+		defer wg.Done()
+		var count = 0
+		for {
+			if count == 5 {
+				return
+			}
+			select {
+			case num := <-ch:
+				fmt.Println(num)
+				count++
+				ch <- 1 - num
+			default:
+			}
+		}
+	}()
+	// 先打印 0
+	ch <- 0
+	wg.Wait()
+	close(ch)
+}
+
+// 10个协程交替打印，打印0-10，每个数字打印10次
+func printCross10() {
 	// 10 个协程交替打印
 	var wg sync.WaitGroup
+	var curCount atomic.Int32 // 记录打印次数，每个数字打印 10 次后清零
 	wg.Add(10)
-	var ch = make(chan int, 10)
+	var ch = make(chan int, 1)
 	// 起 10 个协程
 	for i := 0; i < 10; i++ {
 		go func() {
+			defer wg.Done()
 			for {
 				select {
 				case num := <-ch:
-					fmt.Println(num)
+					if num > 10 { // 打印到 10，让所有协程退出
+						ch <- 11
+						return
+					}
+					fmt.Print(num)
+					if curCount.Load() == 9 {
+						fmt.Println()
+						ch <- num + 1
+						curCount.Store(0)
+					} else {
+						curCount.Add(1)
+						ch <- num
+					}
 				default:
 				}
 			}
 		}()
 	}
-
-	// 打印 0 - 10, 每个数字打印 10 次
-	for n := 0; n < 11; n++ {
-		for i := 0; i < 10; i++ {
-			ch <- n
-		}
-		if n == 10 {
-			// 退出
-			for i := 0; i < 10; i++ {
-				wg.Done()
-			}
-		}
-	}
+	ch <- 0
 	wg.Wait()
+	close(ch)
 }
