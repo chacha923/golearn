@@ -8,6 +8,10 @@ import (
 	"sync"
 )
 
+// https://mp.weixin.qq.com/s/xugsNDFh0_JmvkiFrJbt2w
+// https://xiaolincoding.com/os/8_network_system/hash.html#%E4%BD%BF%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E6%9C%89%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98
+// 一致性hash算法
+
 const (
 	DefaultReplicas = 160 //节点副本, 与权重有关
 )
