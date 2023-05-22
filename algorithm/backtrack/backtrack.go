@@ -8,15 +8,44 @@ import (
 
 // 回溯算法也是 dfs 思想的应用
 //「回溯」就是 深度优先遍历 状态空间的过程中发现的特有的现象，程序会回到以前访问过的结点。
-// 而程序在回到以前访问过的结点的时候，就需要将状态变量恢复成为第一次来到该结点的值。
+// 而程序在回到以前访问过的结点的时候，就需要将状态变量恢复成为第一次来到该结点的值。（跳出递归，后退一步）
 
 // 在代码层面上，在递归方法结束以后，执行递归方法之前的操作的 逆向操作 即可。
 
 // 括号生成, 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
-func generateParenthesis(n int) {
-	res := new([]string)
-	backtrack(n, n, "", res)
-	return result
+// 输入：n = 3
+// 输出：["((()))","(()())","(())()","()(())","()()()"]
+func generateParenthesis(n int) []string {
+	if n == 0 {
+		return []string{}
+	}
+	res := make([]string, 0)
+	backtrackParenthesis(&res, "", 0, 0, n)
+	return res
+}
+
+// curStr: 当前字符串
+// open: curStr 左括号数量
+// close: curStr 右括号数量
+func backtrackParenthesis(res *[]string, curStr string, open int, close int, n int) {
+	if len(curStr) == n*2 {
+		// 符合满足条件的 n 对括号，添加到结果集
+		*res = append(*res, curStr)
+		return
+	}
+
+	if open < n {
+		// 左括号数量小于 n，可以添加左括号
+		backtrackParenthesis(res, curStr+"(", open+1, close, n)
+		// 后退
+		curStr = strings.TrimSuffix(curStr, "(")
+	}
+	if close < open {
+		// 右括号数量小于左括号数量，可以添加右括号
+		backtrackParenthesis(res, curStr+")", open, close+1, n)
+		// 后退
+		curStr = strings.TrimSuffix(curStr, ")")
+	}
 }
 
 // tmp 当前字符串
