@@ -26,3 +26,7 @@ func MidIndex(left, right int) int {
 	// return (left + right) / 2  => left + right/2 - left/2
 	return left + (right-left)/2
 }
+
+func Swap(x, y *int) {
+	*x, *y = *y, *x
+}

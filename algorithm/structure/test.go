@@ -3,7 +3,7 @@ package structure
 import "testing"
 
 func TestStack(t *testing.T) {
-	var stack = NewStack()
+	var stack = NewStack[int]()
 	stack.Push(1)
 	stack.Push(2)
 	stack.Push(3)

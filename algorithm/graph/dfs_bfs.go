@@ -35,7 +35,7 @@ func (g *Graph) addEdge(s int, t int) {
 	g.adj[t].PushBack(s)
 }
 
-//search path by BFS
+// search path by BFS
 // 广度优先搜索的时间复杂度是 O(V+E)，其中，V 表示顶点的个数，E 表示边的个数
 // 广度优先搜索的空间消耗主要在几个辅助变量 visited 数组、queue 队列、prev 数组上。这三个存储空间的大小都不会超过顶点的个数，所以空间复杂度是 O(V)。
 func (g *Graph) BFS(s int, t int) {
@@ -92,7 +92,7 @@ func (g *Graph) DFS(s int, t int) {
 	printPrev(prev, s, t)
 }
 
-//recursivly find path
+// recursivly find path
 func (g *Graph) recurse(s int, t int, prev []int, visited []bool, isFound bool) {
 	if isFound {
 		return
@@ -112,7 +112,7 @@ func (g *Graph) recurse(s int, t int, prev []int, visited []bool, isFound bool) 
 	}
 }
 
-//print path recursively
+// print path recursively
 func printPrev(prev []int, s int, t int) {
 
 	if t == s || prev[t] == -1 {

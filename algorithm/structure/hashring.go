@@ -75,7 +75,7 @@ func (h *HashRing) UpdateNode(key string, weight int) {
 	h.weights[key] = weight
 }
 
-//GetNode get node with key
+// GetNode get node with key
 func (h *HashRing) GetNode(s string) string {
 	h.mu.Lock()
 	defer h.mu.Unlock()
