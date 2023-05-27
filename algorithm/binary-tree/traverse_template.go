@@ -141,3 +141,32 @@ func reverseSlice(slice []int) {
 		j--
 	}
 }
+
+// 没想到二叉树的最小深度，也可以通过层次遍历解决
+func MinDepthWithLevelOrder(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var queue = structure.NewQueue[*TreeNode]()
+	var depth = 1
+	queue.Push(root)
+	for queue.Len() > 0 {
+		// 当前层节点数
+		var curLevelLength = queue.Len()
+		for i := 0; i < curLevelLength; i++ {
+			var cur = queue.Pop()
+			// 找到第一个叶子节点
+			if cur.Left == nil && cur.Right == nil {
+				return depth
+			}
+			if cur.Left != nil {
+				queue.Push(cur.Left)
+			}
+			if cur.Right != nil {
+				queue.Push(cur.Right)
+			}
+		}
+		depth++
+	}
+	return depth
+}
