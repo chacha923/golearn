@@ -124,7 +124,8 @@ func back(s string, pos int, cur []string, ans *[]string) {
 func subsets(nums []int) [][]int {
 	track := make([]int, 0) // 记录当前走过的路径
 	res := new([][]int)     // 结果集
-	back1(nums, 0, res)
+	back1(nums, track, 0, res)
+	return *res
 }
 
 func back1(nums []int, track []int, start int, res *[][]int) {
@@ -134,7 +135,7 @@ func back1(nums []int, track []int, start int, res *[][]int) {
 		//做选择
 		track = append(track, nums[i])
 		// 回溯
-		back1(nums, i+1, track, res)
+		back1(nums, track, i+1, res)
 		// 撤销
 		track = track[:len(track)-1]
 	}
@@ -142,7 +143,7 @@ func back1(nums []int, track []int, start int, res *[][]int) {
 }
 
 // 给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
-func pathSum(root *TreeNode, sum int) [][]int {
+func pathSum(root *binary_tree.TreeNode, sum int) [][]int {
 	if root == nil {
 		return [][]int{}
 	}
@@ -153,7 +154,7 @@ func pathSum(root *TreeNode, sum int) [][]int {
 	return *res
 }
 
-func back2(root *TreeNode, num int, sum int, path []int, res *[][]int) {
+func back2(root *binary_tree.TreeNode, num int, sum int, path []int, res *[][]int) {
 	// 退出条件, num == sum, 访问到叶子节点
 	if root == nil {
 		if num == sum {
@@ -179,7 +180,38 @@ func back2(root *TreeNode, num int, sum int, path []int, res *[][]int) {
 	path = path[:len(path)-1]
 }
 
-// 简化版, 只判断是否存在等于目标和的路径
+// 判断是否存在等于目标和的路径
+func hasPathSumBackstrack(root *binary_tree.TreeNode, targetSum int) bool {
+	if root == nil {
+		return false
+	}
+
+	var curSum int
+	var found bool
+
+	var back func(root *binary_tree.TreeNode)
+	back = func(root *binary_tree.TreeNode) {
+		if root == nil {
+			return
+		}
+		// 前序遍历位置
+		curSum += root.Val
+		// 到叶子节点了，和 target 比较
+		if root.Left == nil && root.Right == nil {
+			if curSum == targetSum {
+				found = true
+			}
+		}
+		back(root.Left)
+		back(root.Right)
+		// 后续遍历位置
+		curSum -= root.Val
+	}
+	back(root)
+	return found
+}
+
+// 简化版, 递归解法，只判断是否存在等于目标和的路径
 // 给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
 func hasPathSum(root *binary_tree.TreeNode, sum int) bool {
 	if root == nil {

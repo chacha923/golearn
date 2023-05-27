@@ -7,7 +7,7 @@ import (
 
 var maxLen int = 0
 var maxLenPath []int = make([]int, 0)
-var stack = structure.NewStack()
+var stack = structure.NewStack[int]()
 
 // 打印二叉树的最长路径
 func FindLongestPath(root *TreeNode) []int {
@@ -18,7 +18,7 @@ func FindLongestPath(root *TreeNode) []int {
 	return maxLenPath
 }
 
-func dfsAndPutStack(root *TreeNode, stack *structure.Stack) {
+func dfsAndPutStack(root *TreeNode, stack *structure.Stack[int]) {
 	if root == nil {
 		// 到底了，开始检查栈
 		if stack.Len() > maxLen {
@@ -144,5 +144,3 @@ func distanceK(root *TreeNode, target *TreeNode, k int) []int {
 	// 结果要去重
 	return util.RemoveDuplicates(result)
 }
-
-

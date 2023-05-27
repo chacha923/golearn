@@ -39,6 +39,13 @@ func (cls *TreeNode) SetRight(val int) {
 	cls.Right = NewTreeNode(val)
 }
 
+func (cls *TreeNode) IsLeaf() bool {
+	if cls == nil {
+		return false
+	}
+	return cls.Left == nil && cls.Right == nil
+}
+
 // n叉树节点
 type NTreeNode struct {
 	Val      int

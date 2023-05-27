@@ -70,10 +70,9 @@ func PostOrderWithoutRecurve(root *TreeNode) {
 			stack.Push(root)
 			root = root.Left
 		}
-		var top = stack.Pop()
-		// 如果右子树存在且未被访问过，则将当前节点重新入栈，并将右子树置为当前节点，继续下一轮循环
+		var top = stack.Top()
+		// 如果栈顶节点的右子树存在且未被访问过，则不出栈，继续下一轮循环使右子树入栈
 		if top.Right != nil && top.Right != prev {
-			stack.Push(top)
 			root = top.Right
 		} else {
 			// do something
