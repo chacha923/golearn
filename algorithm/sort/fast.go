@@ -7,7 +7,7 @@ func RunFastSort() {
 	fmt.Println(FastSort(arr, 0, len(arr)-1))
 }
 
-//快速排序，递归
+// 快速排序，递归
 func FastSort(arr []int, start int, end int) []int {
 	if start < end {
 		i := start

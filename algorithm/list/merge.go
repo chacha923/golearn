@@ -24,6 +24,7 @@ func MergeLists2(l1, l2 *Node) *Node {
 	dummy := &Node{Val: -1}
 	prev := dummy
 	for l1 != nil && l2 != nil {
+		// l1 l2 谁小，谁就是下一个节点
 		if l1.Val < l2.Val {
 			prev.Next = l1
 			l1 = l1.Next
@@ -33,6 +34,7 @@ func MergeLists2(l1, l2 *Node) *Node {
 		}
 		prev = prev.Next
 	}
+	// 处理剩余节点
 	if l1 != nil {
 		prev.Next = l1
 	} else {
@@ -114,4 +116,9 @@ func SwapPairs(head *Node) *Node {
 		head = firstNode.Next // jump
 	}
 	return dummy.Next
+}
+
+// 合并 N 个有序链表
+func MergeNList([][]*Node) *Node {
+	
 }

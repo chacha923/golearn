@@ -1,10 +1,10 @@
 package search
 
-//二分查找，返回key值在数组中的下标，否则返回-1
-//要求数组有序
-//时间复杂度 O(log n)
-//空间复杂度 O(1)
-//凡是能对半分的，空间复杂度都是 logn
+// 二分查找，返回key值在数组中的下标，否则返回-1
+// 要求数组有序
+// 时间复杂度 O(log n)
+// 空间复杂度 O(1)
+// 凡是能对半分的，空间复杂度都是 logn
 func binarySearch(array []int, key int) int {
 	var left = 0
 	var right = len(array) - 1

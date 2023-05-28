@@ -169,6 +169,28 @@ func MaxDepth(head *TreeNode) int {
 	return util.Max(left, right) + 1
 }
 
+var maxDepth int
+var curDepth int
+
+// 用回溯思想求最大深度
+func MaxDepthBackstrack(head *TreeNode) int {
+	var traverse = func(head *TreeNode) {
+		if head == nil {
+			return
+		}
+		curDepth++
+		if head.Left == nil && head.Right == nil {
+			maxDepth = util.Max(maxDepth, curDepth)
+		}
+		MaxDepthBackstrack(head.Left)
+		MaxDepthBackstrack(head.Right)
+		curDepth--
+	}
+
+	traverse(head)
+	return maxDepth
+}
+
 // 最小深度
 func MinDepth(head *TreeNode) int {
 	if head == nil {

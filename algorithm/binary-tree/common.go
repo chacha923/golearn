@@ -1,6 +1,8 @@
 package binary_tree
 
-import "golearn/algorithm/util"
+import (
+	"golearn/algorithm/util"
+)
 
 // 一些简单的练手
 // 树基本上都用递归思想
@@ -22,4 +24,24 @@ func getTreeDepth(root *TreeNode) int {
 	var rightDepth = getTreeDepth(root.Right)
 
 	return util.Max(leftDepth, rightDepth) + 1
+}
+
+// 计算一棵二叉树的最长直径长度。
+// 解决这题的关键在于，每一条二叉树的「直径」长度，就是一个节点的左右子树的最大深度之和。
+func DiameterOfBinaryTree(root *TreeNode) int {
+	var maxDiameter = 0
+
+	var traverse = func(root *TreeNode) {}
+	traverse = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		var leftDepth = MaxDepth(root.Left)
+		var rightDepth = MaxDepth(root.Right)
+		maxDiameter = util.Max(maxDiameter, leftDepth+rightDepth)
+		traverse(root.Left)
+		traverse(root.Right)
+	}
+	traverse(root)
+	return maxDiameter
 }
