@@ -86,6 +86,29 @@ func hasCycle(head *Node) bool {
 	return false
 }
 
+func detectCycle(head *Node) *Node {
+	var fast, slow *Node
+	fast = head
+	slow = head
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
+		slow = slow.Next
+		if fast == slow {
+			break
+		}
+	}
+	// 无环
+	if fast == nil || fast.Next == nil {
+		return nil
+	}
+	slow = head
+	for slow != fast {
+		slow = slow.Next
+		fast = fast.Next
+	}
+	return slow
+}
+
 // 得到链表倒数第n个节点
 func nthToLast(head *Node, n int) *Node {
 	if head == nil || n < 1 {

@@ -19,14 +19,15 @@ func RunMergeSort() {
  */
 func mergeSort(arr, tmp []int, left, right int) {
 	if left < right {
-		mid := (left + right) / 2
+		// mid := (left + right) / 2
+		mid := left + (right-left)/2
 		mergeSort(arr, tmp, left, mid)    //左边归并排序，使得左子序列有序
 		mergeSort(arr, tmp, mid+1, right) //右边归并排序，使得右子序列有序
 		merge(arr, tmp, left, mid, right) //将两个有序子数组合并操作
 	}
 }
 
-//将有二个有序数列a[first...mid]和a[mid...last]合并
+// 将有二个有序数列a[first...mid]和a[mid...last]合并
 func merge(arr, tmp []int, left, mid, right int) {
 	i := left    //左序列指针
 	j := mid + 1 //右序列指针

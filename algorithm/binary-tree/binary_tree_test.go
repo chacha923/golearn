@@ -49,3 +49,8 @@ func TestKthLevel(t *testing.T) {
 	var res = KthLevel(head, 3)
 	fmt.Print(res)
 }
+
+func TestDiameterOfBinaryTree(t *testing.T) {
+	var res = DiameterOfBinaryTree(head)
+	fmt.Print(res)
+}
