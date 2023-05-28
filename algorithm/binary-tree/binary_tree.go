@@ -76,74 +76,60 @@ func dfsWithDeep(root *TreeNode, deep int, res *[]int) {
 	dfsWithDeep(root.Left, deep+1, res)
 }
 
-//输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。
-//假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
-// 前序遍历 preorder = [3,9,20,15,7]
-// 中序遍历 inorder = [9,3,15,20,7]
-//  3
-// / \
-// 9  20
-//  /  \
-// 15   7
-// 前序遍历特点： 节点按照 [ 根节点 | 左子树 | 右子树 ] 排序，以题目示例为例：[ 3 | 9 | 20 15 7 ]
-// 中序遍历特点： 节点按照 [ 左子树 | 根节点 | 右子树 ] 排序，以题目示例为例：[ 9 | 3 | 15 20 7 ]
-func buildTree(preorder []int, inorder []int) *TreeNode {
-	if len(preorder) == 0 {
-		return nil
-	}
-	// 取出根节点
-	root := &TreeNode{Val: preorder[0]}
-	var index int // 保存根节点在中序遍历数组的下标
-	// 在中序遍历找root
-	for i := range inorder {
-		if inorder[i] == preorder[0] {
-			index = i
-			break
-		}
-	}
-	// 递归操作左右子树
-	root.Left = buildTree(preorder[1:index+1], inorder[:index])
-	root.Right = buildTree(preorder[index+1:], inorder[index+1:])
-	return root
-}
 
-// 给定一个二叉树，原地将它展开为一个单链表。靠右
-// 	  1
-//   / \
-//  2   5
-// / \   \
+
+/* 给定一个二叉树，原地将它展开为一个单链表。靠右
+//
+//	   1
+//	  / \
+//	 2   5
+//  / \   \
 // 3   4   6
-// 展开
+
+// 最后一次展开
+   1
+  /  \
+  2   5
+   \   \
+    3   6
+     \
+      4
+// =>
 // 1
-//  \
-//   2
-//    \
-//     3
-//      \
-//       4
-//        \
-//         5
-//          \
-//           6
+//	\
+//	 2
+//	  \
+//	   3
+//	    \
+//	     4
+//	      \
+//	       5
+//	        \
+//	         6
+*/
 // 利用后序遍历
 func flatten(root *TreeNode) {
 	if root == nil {
 		return
 	}
+	// 左子树被展开
 	flatten(root.Left)
+	// 右子树被展开
 	flatten(root.Right)
-	//将右子树挂到 左子树的最右边
-	//再将整个左子树挂到根节点的右边
-	if root.Left != nil {
-		pre := root.Left // 左子树
-		for pre.Right != nil {
-			pre = pre.Right // 左子树最右节点
-		}
-		pre.Right = root.Right // 右子树拼到左子树最右边
-		root.Right = root.Left // 左子树挂到右边
-		root.Left = nil        // 左边置为空
+
+	//将左子树作为右子树
+	//将原来的右子树接到当前右子树的末端
+	var left = root.Left
+	var right = root.Right
+
+	root.Left = nil
+	root.Right = left
+
+	var tmp = root
+	for tmp.Right != nil {
+		tmp = tmp.Right
 	}
-	root = root.Right
+	tmp.Right = right
 	return
 }
 

@@ -41,11 +41,11 @@ func (cls *BST) Insert(data int) {
 	}
 }
 
-func (cls *BST) Search(data int) bool {
-	if cls.root == nil {
-		return false
+func Search(root *binary_tree.TreeNode, data int) *binary_tree.TreeNode {
+	if root == nil {
+		return nil
 	}
-	var current = cls.root
+	var current = root
 	for current != nil {
 		if data < current.Val {
 			current = current.Left
@@ -54,10 +54,35 @@ func (cls *BST) Search(data int) bool {
 			current = current.Right
 		}
 		if data == current.Val {
-			return true
+			return current
 		}
 	}
-	return false
+	return nil
+}
+
+func SearchRecurse(root *binary_tree.TreeNode, data int) *binary_tree.TreeNode {
+	if root == nil {
+		return nil
+	}
+	if data == root.Val {
+		return root
+	}
+	if data < root.Val {
+		return SearchRecurse(root.Left, data)
+	}
+	if data > root.Val {
+		return SearchRecurse(root.Right, data)
+	}
+	return nil
+}
+
+func Delete(root *binary_tree.TreeNode, data int) *binary_tree.TreeNode {
+	if root == nil {
+		return nil
+	}
+	if root.Val == data {
+		return root
+	}
 }
 
 // 将左子树转换为双向链表。
@@ -89,7 +114,7 @@ func Bst2DoubleList(root *binary_tree.TreeNode) *binary_tree.TreeNode {
 
 	// 操作右子树
 	// 拿到右子树转换后的头结点
-	var rightHead = bst2DoubleList(root.Right)
+	var rightHead = Bst2DoubleList(root.Right)
 	// 接到 root 后面
 	if rightHead != nil {
 		rightHead.Left = root
@@ -114,11 +139,11 @@ func SortedListToBST(head *list.DoubleNode) *binary_tree.TreeNode {
 	var mid = midOfList(head)
 	// 整个树的根节点
 	var root = binary_tree.NewTreeNode(mid.Val)
-	root.Right = sortedListToBST(mid.Next.Next)
+	root.Right = SortedListToBST(mid.Next.Next)
 	// 截断
 	mid.Next = nil
 	// 构建右子树
-	root.Left = sortedListToBST(head)
+	root.Left = SortedListToBST(head)
 	return root
 }
 

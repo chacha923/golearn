@@ -43,6 +43,24 @@ func MergeLists2(l1, l2 *Node) *Node {
 	return dummy.Next
 }
 
+func MergeNLists(heads []*Node) *Node {
+	if len(heads) == 0 {
+		return nil
+	}
+	if len(heads) == 1 {
+		return heads[0]
+	}
+	var n = len(heads)
+	for n > 1 {
+		k := (n + 1) / 2
+		for i := 0; i < n/2; i++ {
+			heads[i] = MergeLists(heads[i], heads[i+k])
+		}
+		n = k
+	}
+	return heads[0]
+}
+
 // 给出一个区间的集合，请合并所有重叠的区间。
 // 输入: [[1,3],[2,6],[8,10],[15,18]]
 // 输出: [[1,6],[8,10],[15,18]]

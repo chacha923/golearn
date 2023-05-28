@@ -3,18 +3,18 @@ package binary_tree
 import (
 	"fmt"
 	"golearn/algorithm/sort"
-
-	"github.com/eapache/queue"
+	"golearn/algorithm/structure"
 )
 
 // 遍历模板
 // 遍历是很多能力的基础
+// 这里只按遍历顺序打印节点值，实际上可以做任何事情
 
 // 前序：根左右
 // 中序：左根右
 // 后序：左右根
 
-//递归前序遍历
+// 递归前序遍历
 func PreOrder(root *TreeNode) {
 	// 退出条件
 	if root == nil {
@@ -25,7 +25,7 @@ func PreOrder(root *TreeNode) {
 	PreOrder(root.Right)
 }
 
-//递归中序遍历
+// 递归中序遍历
 func InOrder(root *TreeNode) {
 	if root == nil {
 		return
@@ -35,7 +35,7 @@ func InOrder(root *TreeNode) {
 	InOrder(root.Right)
 }
 
-//递归后序遍历
+// 递归后序遍历
 func PostOrder(root *TreeNode) {
 	if root == nil {
 		return
@@ -45,24 +45,25 @@ func PostOrder(root *TreeNode) {
 	fmt.Println(root.Val)
 }
 
-//分层遍历
+// 分层遍历
 func LevelOrder(root *TreeNode) {
 	if root != nil {
 		return
 	}
-	queue := queue.New()
-	queue.Add(root)
-	for queue.Length() != 0 {
-		length := queue.Length()
+	queue := structure.NewQueue[*TreeNode]()
+	queue.Push(root)
+	for queue.Len() > 0 {
+		length := queue.Len()
 		// 遍历队列, 弹出节点, 每弹出一个把左右孩子插入队尾
+		// 一次内部循环就是一层
 		for i := 0; i < length; i++ {
-			node := queue.Remove().(*TreeNode)
+			node := queue.Pop()
 			fmt.Print(node.Val, " ")
 			if node.Left != nil {
-				queue.Add(node.Left)
+				queue.Push(node.Left)
 			}
 			if node.Right != nil {
-				queue.Add(node.Right)
+				queue.Push(node.Right)
 			}
 		}
 		fmt.Println()
@@ -130,7 +131,7 @@ func LevelOrderZ(root *TreeNode) [][]int {
 	return res
 }
 
-//数组反转
+// 数组反转
 func reverseSlice(slice []int) {
 	i := 0
 	j := len(slice) - 1
@@ -139,4 +140,33 @@ func reverseSlice(slice []int) {
 		i++
 		j--
 	}
+}
+
+// 没想到二叉树的最小深度，也可以通过层次遍历解决
+func MinDepthWithLevelOrder(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var queue = structure.NewQueue[*TreeNode]()
+	var depth = 1
+	queue.Push(root)
+	for queue.Len() > 0 {
+		// 当前层节点数
+		var curLevelLength = queue.Len()
+		for i := 0; i < curLevelLength; i++ {
+			var cur = queue.Pop()
+			// 找到第一个叶子节点
+			if cur.Left == nil && cur.Right == nil {
+				return depth
+			}
+			if cur.Left != nil {
+				queue.Push(cur.Left)
+			}
+			if cur.Right != nil {
+				queue.Push(cur.Right)
+			}
+		}
+		depth++
+	}
+	return depth
 }
