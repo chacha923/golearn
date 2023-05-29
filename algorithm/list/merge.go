@@ -43,6 +43,7 @@ func MergeLists2(l1, l2 *Node) *Node {
 	return dummy.Next
 }
 
+// 合并 N 个有序链表
 func MergeNLists(heads []*Node) *Node {
 	if len(heads) == 0 {
 		return nil
@@ -116,9 +117,4 @@ func SwapPairs(head *Node) *Node {
 		head = firstNode.Next // jump
 	}
 	return dummy.Next
-}
-
-// 合并 N 个有序链表
-func MergeNList([][]*Node) *Node {
-	
 }
