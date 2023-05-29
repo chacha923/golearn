@@ -1,6 +1,9 @@
 package dp
 
-import "golearn/algorithm/util"
+import (
+	"golearn/algorithm/util"
+	"math"
+)
 
 // 爬楼梯，一次可以爬1级或2级，问爬到第n级有多少种方法
 func stair(n int) int {
@@ -138,4 +141,86 @@ func minDistance(s1, s2 string) int {
 func min(a, b, c int) int {
 	var min = util.Min(a, b)
 	return util.Min(min, c)
+}
+
+// 给你输入一个整数数组 nums，请你找在其中找一个和最大的子数组，返回这个子数组的和
+// 1. 滑动窗口法 2. 动态规划
+// 考虑 nums 包含负数的情况
+func maxSubArrayByWindow(nums []int) int {
+	var (
+		left      = 0
+		right     = 0 // 窗口边界
+		windowSum = 0 // 窗口内元素的和
+		maxSum    = math.MinInt
+	)
+	// 我们可以在窗口内元素之和大于等于 0 时扩大窗口，在窗口内元素之和小于 0 时缩小窗口，在每次移动窗口时更新答案。
+	// labuladong 起初认为 nums 包含负数不能使用滑动窗口，但其实可以
+	for right < len(nums) {
+		windowSum += nums[right]
+		right++
+		if windowSum > maxSum {
+			maxSum = windowSum
+		}
+		// 窗口内元素和小于0，判断是否要收缩
+		for windowSum < 0 {
+			windowSum -= nums[left]
+			left++
+		}
+	}
+	return maxSum
+}
+
+func maxSubArray(nums []int) int {
+	// 怎么由 dp[n-1] 推导出 dp[n] 呢？
+	// 定义 dp[i] 为以 nums[i] 结尾的最大子序和，因此每次要遍历整个 dp 数组，找出最大值
+
+	var res = math.MinInt
+	var dp = make([]int, len(nums))
+
+	dp[0] = nums[0]
+	for i := 1; i < len(nums); i++ {
+		// 要么自成一派，要么和前面的子数组合并
+		dp[i] = util.Max(dp[i-1]+nums[i], nums[i])
+	}
+	// 找 dp 数组中的最大值
+	for i := 0; i < len(dp); i++ {
+		res = util.Max(res, dp[i])
+	}
+	return res
+}
+
+// 给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。
+// 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+// 判断达到最后一个下标的最小跳跃次数
+// 只能穷举了
+func jump(nums []int) int {
+	var memo = make([]int, len(nums))
+	for i := 0; i < len(nums); i++ {
+		// 最大跳跃次数 肯定不会超过 len(nums)
+		memo[i] = len(nums)
+	}
+
+	// 从索引 p 跳到最后一格，至少需要 dp(nums, p) 步
+	var dp func(memo []int, nums []int, p int) int
+	dp = func(memo []int, nums []int, p int) int {
+		n := len(nums)
+		// base case: 就是当 p 超过最后一格时，不需要跳跃：
+		if p >= n-1 {
+			return 0
+		}
+		// 子问题已经计算过
+		if memo[p] != n {
+			return memo[p]
+		}
+		// 穷举每个选择
+		var steps = nums[p]
+		// 你可以从 p 位置选择跳 1 步，2 步...
+		for i := 1; i <= steps && p <= n-1; i++ {
+			sub := dp(memo, nums, p+i)
+			memo[p] = util.Min(memo[p], sub+1)
+		}
+		return memo[p]
+	}
+
+	dp(memo, nums, 0)
 }

@@ -22,3 +22,23 @@ func maxArea(height []int) int {
 	}
 	return maxArea
 }
+
+// 给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。
+// 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+// 判断你是否能够到达最后一个下标。
+func jump(nums []int) bool {
+	var (
+		n        = len(nums)
+		farthest = 0
+	)
+	for i := 0; i < n; i++ {
+		// 不断计算能跳到的最远距离
+		farthest = util.Max(farthest, i+nums[i])
+		// 无法到达下标为 i 的位置，直接返回
+		// 可能碰到了 0，卡住跳不动了
+		if farthest <= i {
+			return false
+		}
+	}
+	return farthest >= n-1
+}

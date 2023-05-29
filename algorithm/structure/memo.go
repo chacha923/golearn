@@ -29,3 +29,24 @@ func (m *Memo) Put(i, j, value int) {
 		m.cache[i][j] = value
 	}
 }
+
+type SimpleMemo struct {
+	cache map[int]int
+}
+
+func NewSimpleMemo() *SimpleMemo {
+	return &SimpleMemo{
+		cache: make(map[int]int),
+	}
+}
+
+func (m *SimpleMemo) Get(i int) (int, bool) {
+	if val, ok := m.cache[i]; ok {
+		return val, true
+	}
+	return -1, false
+}
+
+func (m *SimpleMemo) Put(i, value int) {
+	m.cache[i] = value
+}
