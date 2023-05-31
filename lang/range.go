@@ -2,6 +2,7 @@ package lang
 
 import (
 	"fmt"
+
 	"github.com/golang/glog"
 )
 
@@ -12,7 +13,7 @@ func NewMap() map[interface{}]interface{} {
 	return m
 }
 
-func NewArray() [3]int{
+func NewArray() [3]int {
 	var array [3]int
 	array[0] = 0
 	array[1] = 1
@@ -38,15 +39,15 @@ func RangeMap() {
 	}
 }
 
-func RangeSlice(slice []int) []int{
-	for k,_ := range slice {
+func RangeSlice(slice []int) []int {
+	for k := range slice {
 		slice[k] = slice[k] + 1
 	}
 	return slice
 }
 
-func RangeArrayPoint(array [3]int) [3]int{
-	glog.Errorln("RangeArrayPoint before range",array)
+func RangeArrayPoint(array [3]int) [3]int {
+	glog.Errorln("RangeArrayPoint before range", array)
 	for k, v := range &array {
 		array[k] = v + 1
 	}
@@ -54,8 +55,8 @@ func RangeArrayPoint(array [3]int) [3]int{
 	return array
 }
 
-func RangeArray(array [3]int) [3]int{
-	glog.Errorln("RangeArray before range",array)
+func RangeArray(array [3]int) [3]int {
+	glog.Errorln("RangeArray before range", array)
 	for k, v := range array {
 		array[k] = v + 1
 	}
