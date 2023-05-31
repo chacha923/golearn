@@ -1,5 +1,7 @@
 package binary_tree
 
+import "fmt"
+
 // 递归 + 分治 思想
 // 分解为子问题，子问题的成功条件和父问题一样
 // 子问题的结果聚合后就是父问题的结果
@@ -45,4 +47,12 @@ func dfsIsSymmetric(left *TreeNode, right *TreeNode) bool {
 		return false
 	}
 	return dfsIsSymmetric(left.Left, right.Right) && dfsIsSymmetric(left.Right, right.Left)
+}
+
+func printArray(array []int, i int) {
+	if i == len(array) {
+		return
+	}
+	fmt.Println(array[i])
+	printArray(array, i+1)
 }

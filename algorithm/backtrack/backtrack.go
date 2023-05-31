@@ -228,3 +228,29 @@ func hasPathSum(root *binary_tree.TreeNode, sum int) bool {
 	// sum - 当前节点值，等于左子树或右子树的路径和，则找到
 	return hasPathSum(root.Left, sum-root.Val) || hasPathSum(root.Right, sum-root.Val)
 }
+
+func SubSets(nums []int) [][]int {
+	res := [][]int{} // 结果集
+	track := []int{} // 临时数组，可以理解成栈
+
+	// start 表示从下标 start 开始到末尾，nums 片段的排列
+	var backtrack func(start int)
+	backtrack = func(start int) {
+		// 拷贝 track，放到结果集
+		var temp = make([]int, len(track))
+		copy(temp, track)
+		res = append(res, temp)
+
+		for i := start; i < len(nums); i++ {
+			// 做选择
+			track = append(track, nums[i])
+			// 递归，进入下一个状态
+			backtrack(i + 1)
+			// 撤销选择，track 回退
+			track = track[:len(track)-1]
+		}
+	}
+
+	backtrack(0)
+	return res
+}

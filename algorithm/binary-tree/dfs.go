@@ -2,6 +2,7 @@ package binary_tree
 
 import (
 	"fmt"
+	"golearn/algorithm/structure"
 	"golearn/algorithm/util"
 )
 
@@ -24,19 +25,19 @@ func PreOrder1(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	stack := make([]*TreeNode, 0)
+	stack := structure.NewStack[*TreeNode]()
 	curr := root
-	stack = append(stack, curr) // 根节点进栈
-	for len(stack) != 0 {
+	stack.Push(curr) // 根节点进栈
+	for stack.Len() != 0 {
 		// 出栈, 开始操作
-		curr = stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
+		curr = stack.Pop()
+		fmt.Println(curr.Val)
 		// 进栈, 注意栈的特性, 先进右后进左
 		if curr.Right != nil {
-			stack = append(stack, curr.Right)
+			stack.Push(curr.Right)
 		}
 		if curr.Left != nil {
-			stack = append(stack, curr.Left)
+			stack.Push(curr.Left)
 		}
 	}
 	return
@@ -47,17 +48,16 @@ func InOrder1(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	stack := make([]*TreeNode, 0)
+	stack := structure.NewStack[*TreeNode]()
 	curr := root
-	for curr != nil || len(stack) != 0 {
+	for curr != nil || stack.Len() != 0 {
 		// 进栈
 		for curr != nil {
-			stack = append(stack, curr)
+			stack.Push(curr)
 			curr = curr.Left
 		}
 		// 出栈
-		curr = stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
+		curr = stack.Pop()
 		curr = curr.Right
 	}
 	return
@@ -72,31 +72,34 @@ func PostOrder1(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	stack := make([]*TreeNode, 0)
+	stack := structure.NewStack[*TreeNode]()
 	m := make(map[*TreeNode]struct{}) // 记录已经访问的结点
 	curr := root
-	stack = append(stack, curr) // 根节点进栈
-	for len(stack) > 0 {
+	stack.Push(curr) // 根节点进栈
+	for stack.Len() > 0 {
 		// 取栈顶
-		curr = stack[len(stack)-1]
+		curr = stack.Top()
 		leftVisited, rightVisited := true, true // 标记左右孩子是否被访问
 		// 进栈
 		if curr.Right != nil {
 			if _, ok := m[curr.Right]; !ok {
 				rightVisited = false
-				stack = append(stack, curr.Right)
+				// 右孩子没有访问过，进栈
+				stack.Push(curr.Right)
 			}
 		}
 		if curr.Left != nil {
 			if _, ok := m[curr.Left]; !ok {
 				leftVisited = false
-				stack = append(stack, curr.Left)
+				// 左孩子没有访问过，进栈
+				stack.Push(curr.Left)
 			}
 		}
 		// 遇到叶子节点, 出栈
 		if leftVisited && rightVisited {
 			m[curr] = struct{}{}
-			stack = stack[:len(stack)-1]
+			top := stack.Pop()
+			fmt.Println(top.Val)
 		}
 	}
 	return
