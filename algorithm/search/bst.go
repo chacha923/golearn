@@ -76,13 +76,15 @@ func SearchRecurse(root *binary_tree.TreeNode, data int) *binary_tree.TreeNode {
 	return nil
 }
 
+// TOFIX
 func Delete(root *binary_tree.TreeNode, data int) *binary_tree.TreeNode {
 	if root == nil {
 		return nil
 	}
 	if root.Val == data {
-		return root
+		root = nil
 	}
+	return nil
 }
 
 // 将左子树转换为双向链表。
@@ -92,6 +94,8 @@ func Delete(root *binary_tree.TreeNode, data int) *binary_tree.TreeNode {
 // 如果右子树双向链表的第一个节点不为空，将其与当前节点链接。
 // 返回链表的头节点。
 // 该算法的时间复杂度为 O(n)
+// 最终，最左侧节点（leftHead）就是头，最后侧节点（rightTail）就是尾
+// 用额外空间可以简化代码，直接构造个新链表，在中序遍历位置构造
 func Bst2DoubleList(root *binary_tree.TreeNode) *binary_tree.TreeNode {
 	// 双向链表也可以用 TreeNode 结构体表示节点，left -> prev, right -> next
 	// 返回的是双向链表就是完全退化后的二叉查找树
@@ -100,6 +104,7 @@ func Bst2DoubleList(root *binary_tree.TreeNode) *binary_tree.TreeNode {
 	}
 	// 1. 拿到左子树转链表后的头结点
 	var leftHead = Bst2DoubleList(root.Left)
+	// 中序遍历的操作位置
 	// 拿到尾节点，也就是无限往右找
 	var leftTail = leftHead
 	for leftTail != nil && leftTail.Right != nil {
@@ -115,6 +120,7 @@ func Bst2DoubleList(root *binary_tree.TreeNode) *binary_tree.TreeNode {
 	// 操作右子树
 	// 拿到右子树转换后的头结点
 	var rightHead = Bst2DoubleList(root.Right)
+	// 后续遍历位置
 	// 接到 root 后面
 	if rightHead != nil {
 		rightHead.Left = root
