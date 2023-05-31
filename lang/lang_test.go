@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 	"testing"
+	"time"
 )
 
 var array [3]int
@@ -56,4 +57,11 @@ func TestTmp(t *testing.T) {
 
 func TestBar(t *testing.T) {
 	bar()
+}
+
+func TestCh(t *testing.T) {
+	var mq = NewMQ()
+	go mq.Run()
+	time.Sleep(1 * time.Second)
+	mq.Close()
 }

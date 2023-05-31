@@ -4,5 +4,5 @@ import "fmt"
 
 func Int2Str() {
 	i := 64
-	fmt.Println(string(i))
+	fmt.Println(i)
 }
