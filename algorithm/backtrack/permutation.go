@@ -12,46 +12,38 @@ func FullPermute(nums []int) [][]int {
 	if len(nums) == 1 {
 		return [][]int{nums}
 	}
-	res := [][]int{} // 结果集
+	res := [][]int{}                // 结果集
+	track := []int{}                // 临时栈，当打满说明得到了一个最终结果
+	used := make([]bool, len(nums)) // 记录 nums[i] 元素是否被使用，简化代码
 
-	var backtrack func(nums []int, res *[][]int, start int)
-	backtrack = func(nums []int, res *[][]int, start int) {
-		// 访问到最后一个元素了，把当前数组加入结果集
-		if start == len(nums) {
+	var backtrack func(nums []int, track []int, used []bool, res *[][]int)
+	backtrack = func(nums []int, track []int, used []bool, res *[][]int) {
+		// 触发结束条件
+		if len(track) == len(nums) {
+			// 因为 track 是全局变量，因此需要新建一个数组来存储一份全排列
 			tmp := make([]int, len(nums))
 			copy(tmp, nums)
 			*res = append(*res, tmp)
 			return
 		}
 
-		for i := start; i < len(nums); i++ {
-			// 做选择，把start元素后面的所有元素依次交换到数组头部
-			nums[i], nums[start] = nums[start], nums[i]
-			// 继续递归
-			backtrack(nums, res, start+1)
-			// 撤销选择
-			nums[i], nums[start] = nums[start], nums[i]
+		for i := 0; i < len(nums); i++ {
+			// 排除不合法的选择
+			if used[i] {
+				// 剪枝，避免重复使用同一个数字
+				continue
+			}
+			// 做选择
+			track = append(track, nums[i])
+			used[i] = true
+			// 进入下一层决策树
+			backtrack(nums, track, used, res)
+			// 取消选择
+			track = track[:len(track)-1]
+			used[i] = false
 		}
 	}
 
-	backtrack(nums, &res, 0)
+	backtrack(nums, track, used, &res)
 	return res
 }
-
-// func backtrack(nums []int, used map[int]bool, path []int, res *[][]int) {
-// 	if len(nums) == len(path) { // 排列结束, 此处一定要copy slice之后再放入结果集！！！！！！！！
-// 		tmp := make([]int, len(nums))
-// 		copy(tmp, pathNums)
-// 		result = append(result, tmp)
-// 		return
-// 	}
-// 	for i := 0; i < len(nums); i++ {
-// 		if !used[i] {
-// 			used[i] = true                        // 标记已使用
-// 			pathNums = append(pathNums, nums[i])  // 将数字加入路径尾部
-// 			backtrack(nums, pathNums, used)       // 继续dfs深搜
-// 			pathNums = pathNums[:len(pathNums)-1] // 将尾部数据弹出，回滚操作
-// 			used[i] = false                       // 标记未使用
-// 		}
-// 	}
-// }
