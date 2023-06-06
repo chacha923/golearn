@@ -2,6 +2,7 @@ package other
 
 import (
 	"fmt"
+	"golearn/algorithm/structure"
 	"sync"
 	"sync/atomic"
 )
@@ -350,4 +351,45 @@ func printCross10() {
 	ch <- 0
 	wg.Wait()
 	close(ch)
+}
+
+const (
+	Ls = '('
+	Rs = ')'
+	Lm = '['
+	Rm = ']'
+	LL = '{'
+	RL = '}'
+)
+
+var mapping = map[rune]rune{
+	Rs: Ls,
+	Rm: Lm,
+	RL: LL,
+}
+
+func IsValidBrackets(target string) bool {
+	var stack = structure.NewStack[rune]()
+	if len(target) == 0 {
+		return true
+	}
+	if target[0] == ')' || target[0] == ']' || target[0] == '}' {
+		return false
+	}
+	for _, s := range target {
+		// 1.栈空，直接进栈
+		if stack.Len() == 0 {
+			stack.Push(s)
+			continue
+		}
+		// 2. 观察栈顶
+		var top = stack.Top()
+		fmt.Println("top", string(top), "mapping of s", string(mapping[s]))
+		if top == mapping[s] {
+			stack.Pop()
+		} else {
+			stack.Push(s)
+		}
+	}
+	return stack.Len() == 0
 }
