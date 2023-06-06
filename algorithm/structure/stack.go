@@ -40,6 +40,20 @@ func (s *Stack[T]) Top() T {
 	return s.data[len(s.data)-1]
 }
 
+func (s *Stack[T]) Bottom() T {
+	if len(s.data) == 0 {
+		var zero T
+		return zero
+	}
+	return s.data[0]
+}
+
+func (s *Stack[T]) Clear() {
+	for s.Len() > 0 {
+		s.Pop()
+	}
+}
+
 // 注意，下标小的是栈底
 func (s *Stack[T]) ToSlice() []T {
 	if s == nil {

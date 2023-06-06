@@ -1,5 +1,7 @@
 package list
 
+import "golearn/algorithm/structure"
+
 // K个一组翻转链表
 // 给你这个链表：1->2->3->4->5
 // 当 k = 2 时，应当返回: 2->1->4->3->5
@@ -44,29 +46,30 @@ func reverseKGroupWithStack(head *Node, k int) *Node {
 	if head == nil {
 		return nil
 	}
-	dummyHead := &Node{Next: head} // next域永远指向当前头节点
-	preNode := dummyHead           // 临时指针
-	stack := make([]*Node, 0)      // 临时栈
-
+	dummyHead := &Node{Next: head}          // next域永远指向当前头节点
+	preNode := dummyHead                    // 临时指针
+	var stack = structure.NewStack[*Node]() // 临时栈
 	for head != nil {
 		count := 0
 		// head 移动k次
 		for head != nil && count < k {
-			stack = append(stack, head)
+			stack.Push(head)
 			head = head.Next
 			count += 1
 		}
 		// 长度不够, 不反转
-		if k > len(stack) {
-			preNode.Next = stack[0]
+		if k > stack.Len() {
+			var bottom = stack.Bottom()
+			preNode.Next = bottom
 			break
 		}
-		for i := len(stack) - 1; i >= 0; i-- {
-			preNode.Next = stack[i]
-			preNode = stack[i] // 前进
+		for stack.Len() > 0 {
+			var pop = stack.Pop()
+			preNode.Next = pop
+			preNode = pop // 前进
 		}
 		preNode.Next = head // 反转好的部分接上原链表
-		stack = stack[0:0]  // 清空栈
+		stack.Clear()       // 清空栈
 	}
 	return dummyHead.Next
 }
@@ -99,4 +102,12 @@ func reverseKGroupWithChangeValue(head *Node, k int) *Node {
 		stack = stack[0:0]
 	}
 	return dummy.Next
+}
+
+func ReversePrintNodes(head *Node) {
+	if head == nil {
+		return
+	}
+	ReversePrintNodes(head.Next)
+	println(head.Val)
 }
