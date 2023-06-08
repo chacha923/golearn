@@ -2,7 +2,6 @@ package binary_tree
 
 import (
 	"fmt"
-	"golearn/algorithm/sort"
 	"golearn/algorithm/structure"
 )
 
@@ -96,77 +95,4 @@ func LevelOrder2(root *TreeNode) [][]int {
 		res = append(res, seq)
 	}
 	return res
-}
-
-// 给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
-// Z字型遍历
-func LevelOrderZ(root *TreeNode) [][]int {
-	if root == nil {
-		return nil
-	}
-	var res [][]int
-	queue := []*TreeNode{root}
-
-	for len(queue) > 0 {
-		count := len(queue)
-		var seq []int
-		for i := 0; i < count; i++ {
-			node := queue[i]
-			seq = append(seq, node.Val)
-			if node.Left != nil {
-				queue = append(queue, node.Left)
-			}
-			if node.Right != nil {
-				queue = append(queue, node.Right)
-			}
-		}
-		queue = queue[count:]
-		res = append(res, seq)
-	}
-	for i := range res {
-		if i%2 == 1 {
-			reverseSlice(res[i])
-		}
-	}
-	return res
-}
-
-// 数组反转
-func reverseSlice(slice []int) {
-	i := 0
-	j := len(slice) - 1
-	for i < j {
-		sort.Swap(slice, i, j)
-		i++
-		j--
-	}
-}
-
-// 没想到二叉树的最小深度，也可以通过层次遍历解决
-func MinDepthWithLevelOrder(root *TreeNode) int {
-	if root == nil {
-		return 0
-	}
-	var queue = structure.NewQueue[*TreeNode]()
-	var depth = 1
-	queue.Push(root)
-	for queue.Len() > 0 {
-		// 当前层节点数
-		var curLevelLength = queue.Len()
-		for i := 0; i < curLevelLength; i++ {
-			var cur = queue.Pop()
-			// 找到第一个叶子节点
-			if cur.Left == nil && cur.Right == nil {
-				return depth
-			}
-			if cur.Left != nil {
-				queue.Push(cur.Left)
-			}
-			if cur.Right != nil {
-				queue.Push(cur.Right)
-			}
-		}
-		depth++
-	}
-	return depth
 }
