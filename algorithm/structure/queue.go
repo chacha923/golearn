@@ -26,6 +26,14 @@ func (q *Queue[T]) Pop() T {
 	return v
 }
 
+func (q *Queue[T]) Peek() T {
+	if len(q.data) == 0 {
+		var zero T
+		return zero
+	}
+	return q.data[0]
+}
+
 func (q *Queue[T]) Len() int {
 	if q == nil {
 		return 0

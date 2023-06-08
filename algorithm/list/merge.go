@@ -1,6 +1,9 @@
 package list
 
-import "sort"
+import (
+	"golearn/algorithm/structure"
+	"sort"
+)
 
 // 合并两个有序链表 递归法
 func MergeLists(l1, l2 *Node) *Node {
@@ -19,26 +22,63 @@ func MergeLists(l1, l2 *Node) *Node {
 	return l2
 }
 
-// 合并两个有序链表 迭代法
+// 合并两个有序链表 迭代法（拉链）
 func MergeLists2(l1, l2 *Node) *Node {
-	dummy := &Node{Val: -1}
-	prev := dummy
+	dummy := NewEmptyNode()
+	// 游标指针，每次选择较小的头结点
+	cur := dummy
 	for l1 != nil && l2 != nil {
 		// l1 l2 谁小，谁就是下一个节点
 		if l1.Val < l2.Val {
-			prev.Next = l1
+			cur.Next = l1
 			l1 = l1.Next
-		} else {
-			prev.Next = l2
+		} else if l1.Val >= l2.Val {
+			cur.Next = l2
 			l2 = l2.Next
 		}
-		prev = prev.Next
+		cur = cur.Next
 	}
 	// 处理剩余节点
 	if l1 != nil {
-		prev.Next = l1
+		cur.Next = l1
 	} else {
-		prev.Next = l2
+		cur.Next = l2
+	}
+	return dummy.Next
+}
+
+// 通过两个辅助队列实现
+func MergeRange3(l1, l2 *Node) *Node {
+	if l1 == nil {
+		return l2
+	}
+	if l2 == nil {
+		return l1
+	}
+	dummy := &Node{Val: -1}
+	prev := dummy
+	var q1 = structure.NewQueue[*Node]()
+	var q2 = structure.NewQueue[*Node]()
+	for l1 != nil {
+		q1.Push(l1)
+		l1 = l1.Next
+	}
+	for l2 != nil {
+		q2.Push(l2)
+		l2 = l2.Next
+	}
+	for q1.Len() > 0 && q2.Len() > 0 {
+		if q1.Peek().Val < q2.Peek().Val {
+			prev.Next = q1.Pop()
+		} else if q1.Peek().Val >= q2.Peek().Val {
+			prev.Next = q2.Pop()
+		}
+		prev = prev.Next
+	}
+	if q1.Len() > 0 {
+		prev.Next = q1.Pop()
+	} else if q2.Len() > 0 {
+		prev.Next = q2.Pop()
 	}
 	return dummy.Next
 }
