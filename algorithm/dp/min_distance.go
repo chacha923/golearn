@@ -1,6 +1,8 @@
 package dp
 
-import "golearn/suanfa/lib"
+import (
+	"golearn/algorithm/util"
+)
 
 // https://leetcode-cn.com/problems/edit-distance/
 // 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
@@ -18,13 +20,16 @@ import "golearn/suanfa/lib"
 // base case 是 i 走完 s1 或 j 走完 s2，可以直接返回另一个字符串剩下的长度。
 // 对于每对儿字符 s1[i] 和 s2[j]，可以有四种操作：
 // if s1[i] == s2[j]:
-//     啥都别做（skip）
-//     i, j 同时向前移动
+//
+//	啥都别做（skip）
+//	i, j 同时向前移动
+//
 // else:
-//     三选一：
-//         插入（insert）
-//         删除（delete）
-//         替换（replace）
+//
+//	三选一：
+//	    插入（insert）
+//	    删除（delete）
+//	    替换（replace）
 func minDistances(word1 string, word2 string) int {
 	m, n := len(word1), len(word2)
 	var dp = make([][]int, m+1)
@@ -47,8 +52,8 @@ func minDistances(word1 string, word2 string) int {
 			} else {
 				dp[i][j] = dp[i-1][j-1] + 1 //替换
 			}
-			dp[i][j] = lib.Min(dp[i][j], dp[i][j-1]+1) // 插入
-			dp[i][j] = lib.Min(dp[i][j], dp[i-1][j]+1) // 删除
+			dp[i][j] = util.Min(dp[i][j], dp[i][j-1]+1) // 插入
+			dp[i][j] = util.Min(dp[i][j], dp[i-1][j]+1) // 删除
 		}
 	}
 	return dp[m][n]

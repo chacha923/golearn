@@ -222,5 +222,5 @@ func jump(nums []int) int {
 		return memo[p]
 	}
 
-	dp(memo, nums, 0)
+	return dp(memo, nums, 0)
 }

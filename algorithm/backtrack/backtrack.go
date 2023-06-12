@@ -120,26 +120,29 @@ func back(s string, pos int, cur []string, ans *[]string) {
 }
 
 // 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
-// 解集不能包含重复的子集。
+// 解集不能包含重复的「子集」。
+// [1,2,3] -> [],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]
 func subsets(nums []int) [][]int {
-	track := make([]int, 0) // 记录当前走过的路径
-	res := new([][]int)     // 结果集
-	back1(nums, track, 0, res)
-	return *res
-}
+	var track = make([]int, 0) // 记录当前走过的路径
+	var res = make([][]int, 0) // 结果集
+	// back1(nums, track, 0, res)
 
-func back1(nums []int, track []int, start int, res *[][]int) {
-	*res = append(*res, track)
-	// 注意 i 从 start 开始递增
-	for i := start; i < len(nums); i++ {
-		//做选择
-		track = append(track, nums[i])
-		// 回溯
-		back1(nums, track, i+1, res)
-		// 撤销
-		track = track[:len(track)-1]
+	// 定义回溯函数，从指定下标开始的子数组，统计子集
+	var backtrack func(start int)
+	backtrack = func(start int) {
+		// 每次加入一个子集
+		temp := make([]int, len(track))
+		copy(temp, track)
+		res = append(res, temp)
+
+		for i := start; i < len(nums); i++ {
+			track = append(track, nums[i])
+			backtrack(i + 1)
+			track = track[:len(track)-1]
+		}
 	}
-	return
+	backtrack(0)
+	return res
 }
 
 // 给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
