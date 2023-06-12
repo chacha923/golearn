@@ -37,43 +37,38 @@ func swapPairs(head *Node) *Node {
 
 // 反转链表，返回新的头结点（原来的最后一个节点）
 // 容易想不到，不要上来就写这种
-func reverseList(root *Node) *Node {
-	if root == nil || root.Next == nil {
-		return root
+func reverseList(head *Node) *Node {
+	if head == nil || head.Next == nil {
+		return head
 	}
-	var prev = root
-	root = root.Next
+	var prev = head
+	head = head.Next
 	// 1 (prev) ->  2 (root) ->  3 (root.Next)
-	for root != nil {
-		var tmp = root.Next
-		root.Next = prev
-		prev = root
-		root = tmp
+	for head != nil {
+		var tmp = head.Next
+		head.Next = prev
+		prev = head
+		head = tmp
 	}
-	return root
+	return head
 }
 
 // 递归 不用辅助栈
-func ReverseList1(root *Node) *Node {
-	if root == nil || root.Next == nil {
-		return nil
-	}
-	// 最后找不到头，需要提前保存头节点
-	var head = root
-	for head.Next != nil {
-		head = head.Next
-	}
-	var reverse = func(root *Node) {}
-	reverse = func(root *Node) {
+func ReverseList1(head *Node) *Node {
+	var reverse func(head *Node) *Node
+	reverse = func(head *Node) *Node {
 		// 最多递归到倒数第二个节点
-		if root.Next.Next == nil {
-			return
+		if head == nil || head.Next == nil {
+			return head
 		}
-		reverse(root.Next)
+		var last = reverse(head.Next)
 		// 反转
-		root.Next.Next = root
+		head.Next.Next = head
+		head.Next = nil
+		return last
 	}
-	return head
+
+	return reverse(head)
 }
 
 // 辅助栈
