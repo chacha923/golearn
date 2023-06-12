@@ -144,3 +144,15 @@ func distanceK(root *TreeNode, target *TreeNode, k int) []int {
 	// 结果要去重
 	return util.RemoveDuplicates(result)
 }
+
+// 返回二叉树的节点数
+func CountOfNode(root *TreeNode) int {
+	var reverse func(*TreeNode) int
+	reverse = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		return reverse(root.Left) + reverse(root.Right) + 1
+	}
+	return reverse(root)
+}
