@@ -21,22 +21,6 @@ func Reverse(head *Node) *Node {
 	return pre
 }
 
-// 反转链表
-func reverse(head *Node) *Node {
-	if head == nil {
-		return nil
-	}
-	var pre *Node
-	cur := head
-	for cur != nil {
-		next := cur.Next
-		cur.Next = pre
-		pre = cur
-		cur = next
-	}
-	return pre
-}
-
 // 判断链表是否有环
 // 快指针追上慢指针说明有环
 // 快指针走到链表尾说明无环
@@ -382,30 +366,19 @@ func deleteDuplicates2(head *Node) *Node {
 // 请判断一个链表是否为回文链表。
 // 你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
 func isPalindrome(head *Node) bool {
-	if head == nil || head.Next == nil {
-		return true
-	}
-	fast := head
-	slow := head
-	for {
-		// 注意退出条件, 奇数长度fast走到倒数1节点, 偶数长度fast走到倒数第2节点
-		if fast.Next == nil || fast.Next.Next == nil {
-			break
+	var traverse func(*Node, *Node) bool
+	traverse = func(left, right *Node) bool {
+		if right == nil {
+			return true
 		}
-		slow = slow.Next
-		fast = fast.Next.Next
+		var res = traverse(left, right.Next)
+		// 后序遍历，right 指针先走到最右，left right 逐渐往中间走
+		res = res && (right.Val == left.Val)
+		left = left.Next
+		return res
 	}
-	// slow 后面的部分反转, pre指向反转后的头结点
-	// 长度为奇数, slow指向的刚好是中间节点, 因此后面的值比较不带中间节点了
-	pre := reverse(slow.Next)
-	for head != nil && pre != nil {
-		if head.Val != pre.Val {
-			return false
-		}
-		head = head.Next
-		pre = pre.Next
-	}
-	return true
+
+	return traverse(head, head)
 }
 
 // 寻找重复数
@@ -513,4 +486,33 @@ func reversePrint(head *Node) []int {
 		res = append(res, top)
 	}
 	return res
+}
+
+// 两两交换节点
+func swapPairs(head *Node) *Node {
+	if head == nil {
+		return nil
+	}
+	if head.Next == nil {
+		return head
+	}
+	var dummy = NewEmptyNode()
+	var temp = dummy
+
+	for {
+		// 终止条件，只剩一个节点或者没有节点
+		if temp.Next == nil || temp.Next.Next == nil {
+			break
+		}
+		var node1 = temp.Next
+		var node2 = temp.Next.Next
+
+		temp.Next = node2
+		node1.Next = node2.Next
+		node2.Next = node1
+
+		temp = node1
+
+	}
+	return dummy.Next
 }
