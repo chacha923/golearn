@@ -17,49 +17,46 @@ func RunMergeSort() {
  * @param nums 待排序数组
  * @return 输出有序数组
  */
-func mergeSort(arr, tmp []int, left, right int) {
-	if left < right {
-		// mid := (left + right) / 2
-		mid := left + (right-left)/2
-		mergeSort(arr, tmp, left, mid)    //左边归并排序，使得左子序列有序
-		mergeSort(arr, tmp, mid+1, right) //右边归并排序，使得右子序列有序
-		merge(arr, tmp, left, mid, right) //将两个有序子数组合并操作
-	}
+func sort(nums []int, lo int, hi int) {
+	mid := lo + (hi-lo)/2
+	sort(nums, lo, mid)
+	sort(nums, mid+1, hi)
+
+	merge(nums, lo, mid, hi)
 }
 
-// 将有二个有序数列a[first...mid]和a[mid...last]合并
-func merge(arr, tmp []int, left, mid, right int) {
-	i := left    //左序列指针
-	j := mid + 1 //右序列指针
-	t := 0       //临时数组指针
-	for i <= mid && j <= right {
-		if arr[i] <= arr[j] {
-			tmp[t] = arr[i]
-			t++
+func merge(nums []int, lo, mid, hi int) {
+	// 对 nums[lo...mid] 和 nums[mid+1...hi] 合并
+	// 创建临时数组，用于存储合并结果
+	temp := make([]int, hi-lo+1)
+	var i = lo      // 左侧子数组的起始索引
+	var j = mid + 1 // 右侧子数组的起始索引
+	var idx = 0     // 临时数组的索引
+
+	// 将左右两个有序子数组按顺序合并到临时数组中
+	for i <= mid && j <= hi {
+		if nums[i] <= nums[j] {
+			temp[idx] = nums[i]
 			i++
-		} else {
-			tmp[t] = arr[j]
-			t++
+		} else if nums[i] > nums[j] {
+			temp[idx] = nums[j]
 			j++
 		}
+		idx++
 	}
-	for i <= mid { //将左边剩余元素填充进temp中
-		tmp[t] = arr[i]
-		t++
+	for i <= mid {
+		temp[idx] = nums[i]
 		i++
+		idx++
 	}
-	for j <= right { //将右序列剩余元素填充进temp中
-		tmp[t] = arr[j]
-		t++
+	for j <= hi {
+		temp[idx] = nums[j]
 		j++
+		idx++
 	}
-
-	t = 0
-	//将temp中的元素全部拷贝到原数组中
-	for left <= right {
-		arr[left] = tmp[t]
-		left++
-		t++
+	// 将临时数组的元素复制回原始数组
+	for i := 0; i < len(temp); i++ {
+		nums[lo+i] = temp[i]
 	}
 }
 

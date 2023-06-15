@@ -28,7 +28,7 @@ func MergeLists2(l1, l2 *Node) *Node {
 	// 游标指针，每次选择较小的头结点
 	cur := dummy
 	for l1 != nil && l2 != nil {
-		// l1 l2 谁小，谁就是下一个节点
+		// l1 l2 谁小，谁就是 cur 指针要去的下一个节点
 		if l1.Val < l2.Val {
 			cur.Next = l1
 			l1 = l1.Next
@@ -41,7 +41,7 @@ func MergeLists2(l1, l2 *Node) *Node {
 	// 处理剩余节点
 	if l1 != nil {
 		cur.Next = l1
-	} else {
+	} else if l2 != nil {
 		cur.Next = l2
 	}
 	return dummy.Next
