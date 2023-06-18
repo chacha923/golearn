@@ -65,3 +65,7 @@ func TestCh(t *testing.T) {
 	time.Sleep(1 * time.Second)
 	mq.Close()
 }
+
+func TestUpdatePrivateField(t *testing.T) {
+	UpdatePrivateField()
+}
