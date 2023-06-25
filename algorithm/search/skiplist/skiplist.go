@@ -4,7 +4,9 @@ import (
 	"math/rand"
 )
 
-var p float64 = 0.5		//控制是否在上层level创建节点的概率, 如果rand < p , 那么创建节点
+// https://mp.weixin.qq.com/s/fvfz6bdvsZJtGsdL0MPYoA  基于golang从零到一实现跳表
+
+var p float64 = 0.5 //控制是否在上层level创建节点的概率, 如果rand < p , 那么创建节点
 
 type SkipList struct {
 	level int
@@ -15,7 +17,7 @@ type SkipList struct {
 	tail *SkipListNode //level 0 尾节点
 }
 
-//初始化
+// 初始化
 func NewSkipList() *SkipList {
 	sl := &SkipList{}
 	sl.head = NewSkipListNode("head", "head") //顶层的头节点
@@ -28,7 +30,7 @@ func NewSkipList() *SkipList {
 	return sl
 }
 
-//判断跳表是否空
+// 判断跳表是否空
 func (sl *SkipList) IsEmpty() bool {
 	if sl.size == 0 {
 		return true
@@ -52,9 +54,10 @@ func (sl *SkipList) FindFront(key string) *SkipListNode {
 	return tmp
 }
 
-/**
+/*
+*
 添加一个新节点
- */
+*/
 func (sl *SkipList) Add(k, v string) string {
 	tmp := sl.FindFront(k)
 
@@ -111,11 +114,13 @@ func (sl *SkipList) Add(k, v string) string {
 	return "head"
 }
 
-/**
+/*
+*
 查找一个节点
-  从顶层头结点开始遍历, 当右边节点key > k,
-	说明该层没有k, 移动到下一层, 继续向右查找
- */
+
+	  从顶层头结点开始遍历, 当右边节点key > k,
+		说明该层没有k, 移动到下一层, 继续向右查找
+*/
 func (sl *SkipList) Find(k string) *SkipListNode {
 	tmp := sl.head
 	node := tmp
@@ -142,11 +147,12 @@ func (sl *SkipList) Find(k string) *SkipListNode {
 	return nil
 }
 
-/**
+/*
+*
 删除一个节点
 调用查找函数，删除最底层的某个节点，并把其节点的左右相连，
 和链表操作一样，只是其上方若有则都需要调整
- */
+*/
 func (sl *SkipList) Del(k string) {
 	tmp := sl.Find(k)
 	for tmp != nil {
@@ -156,9 +162,10 @@ func (sl *SkipList) Del(k string) {
 	}
 }
 
-/**
+/*
+*
 格式化输出跳表
- */
+*/
 func (sl *SkipList) Print() {
 	node1 := sl.head
 	var node *SkipListNode
