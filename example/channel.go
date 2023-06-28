@@ -17,7 +17,7 @@ func chanBlock() {
 	println(msg)
 }
 
-func master() {
+func singleWorkerRunner() {
 	var done = make(chan bool, 1)
 
 	var worker = func() {

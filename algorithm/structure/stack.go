@@ -1,5 +1,23 @@
 package structure
 
+// 定义栈接口，可以用来写伪代码
+type IStack[T any] interface {
+	// 进栈
+	Push(v T)
+	// 出栈
+	Pop() T
+	// 栈长度
+	Len() int
+	// 观察栈顶
+	Top() T
+	// 观察栈底
+	Bottom() T
+	// 清空栈
+	Clear()
+	// 转化为切片
+	ToSlice() []T
+}
+
 // 用切片模拟一个栈，下标大的元素靠近栈顶
 type Stack[T any] struct {
 	data []T

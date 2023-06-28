@@ -2,17 +2,18 @@ package list
 
 import "golearn/algorithm/structure"
 
-// 反转链表节点，只需要知道前序节点，链表就不会断
+// 反转链表节点，只需要记住《前序节点》，链表就不会断
 // temp		temp.next  temp.next.next
 // temp	->	node1  -> node2
 
 // 反转链表，返回新的头结点（原来的最后一个节点）
 // 容易想不到，不要上来就写这种
-func reverseList(head *Node) *Node {
+func ReverseList(head *Node) *Node {
 	if head == nil || head.Next == nil {
 		return head
 	}
 	var prev = head
+	// head 先走一步，这里用个 dummy 节点更优雅
 	head = head.Next
 	// 1 (prev) ->  2 (root) ->  3 (root.Next)
 	for head != nil {
@@ -35,6 +36,7 @@ func ReverseList1(head *Node) *Node {
 		var last = reverse(head.Next)
 		// 反转
 		head.Next.Next = head
+		// 可以直接断开, 因为递归栈保存了前面的节点
 		head.Next = nil
 		return last
 	}
@@ -56,7 +58,7 @@ func ReverseList2(root *Node) *Node {
 	dummy.Next = stack.Top()
 	for stack.Len() > 0 {
 		var pop = stack.Pop()
-		pop.Next = stack.Top()
+		pop.Next = stack.Top() // 指向栈顶节点，TODO 这里没处理最后一个节点出栈的情况
 	}
 	return dummy.Next
 }
