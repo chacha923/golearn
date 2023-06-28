@@ -3,6 +3,8 @@ package other
 
 import "sync"
 
+// 加权轮询算法，用于客户端计算请求哪个后端实例
+
 //lastId int = -1  //上一次选择的服务器
 //cw int = 0  //当前调度的权值
 //gcd int = 2 //所有权重的最大公约数

@@ -3,7 +3,6 @@ module golearn
 go 1.18
 
 require (
-	github.com/eapache/queue v1.1.0
 	github.com/golang/glog v1.1.1
 	github.com/golang/protobuf v1.5.3
 	golang.org/x/net v0.9.0
