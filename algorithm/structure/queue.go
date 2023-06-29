@@ -1,5 +1,16 @@
 package structure
 
+type IQueue[T any] interface {
+	// 进队
+	Push(v T)
+	// 出队
+	Pop() T
+	// 队列长度
+	Len() int
+	// 观察队头节点
+	Peek() T
+}
+
 // 用切片模拟一个普通的 FIFO 队列
 // 下标 0 为队头，下标 len(data)-1 为队尾
 type Queue[T any] struct {

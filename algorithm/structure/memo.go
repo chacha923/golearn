@@ -1,5 +1,6 @@
 package structure
 
+// 备忘录，二维
 type Memo struct {
 	cache map[int]map[int]int
 }
@@ -30,6 +31,7 @@ func (m *Memo) Put(i, j, value int) {
 	}
 }
 
+// 备忘录，一维
 type SimpleMemo struct {
 	cache map[int]int
 }
