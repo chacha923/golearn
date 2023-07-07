@@ -15,6 +15,8 @@ func ReverseList(head *Node) *Node {
 	var prev = head
 	// head 先走一步，这里用个 dummy 节点更优雅
 	head = head.Next
+	// 释放第一个节点的指针域
+	prev.Next = nil
 	// 1 (prev) ->  2 (root) ->  3 (root.Next)
 	for head != nil {
 		var tmp = head.Next
@@ -59,6 +61,34 @@ func ReverseList2(root *Node) *Node {
 	for stack.Len() > 0 {
 		var pop = stack.Pop()
 		pop.Next = stack.Top() // 指向栈顶节点，TODO 这里没处理最后一个节点出栈的情况
+	}
+	return dummy.Next
+}
+
+// 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
+// 说明:
+// 1 ≤ m ≤ n ≤ 链表长度。
+// 输入: 1->2->3->4->5->NULL, m = 2, n = 4
+// 输出: 1->4->3->2->5->NULL
+func reverseBetween(head *Node, m int, n int) *Node {
+	if head == nil || m > n {
+		return nil
+	}
+	dummy := &Node{Next: head}
+	prev := dummy
+
+	//走到将要翻转节点的前一个节点 prev
+	for i := 0; i < m-1; i++ {
+		prev = prev.Next
+	}
+
+	//cur 第m个节点，也就是将要翻转的节点
+	cur := prev.Next
+	for i := m; i < n; i++ {
+		tmp := cur.Next     //保存要反转节点的下一个节点
+		cur.Next = tmp.Next //当前节点指向 要放转节点的next节点，最终指向第m个节点的next
+		tmp.Next = prev.Next
+		prev.Next = tmp
 	}
 	return dummy.Next
 }
