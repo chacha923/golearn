@@ -8,6 +8,8 @@ type IStack[T any] interface {
 	Pop() T
 	// 栈长度
 	Len() int
+	// 栈是否为空
+	Empty() bool
 	// 观察栈顶
 	Top() T
 	// 观察栈底
@@ -48,6 +50,10 @@ func (s *Stack[T]) Len() int {
 		return 0
 	}
 	return len(s.data)
+}
+
+func (s *Stack[T]) Empty() bool {
+	return s.Len() == 0
 }
 
 func (s *Stack[T]) Top() T {
