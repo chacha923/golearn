@@ -2,25 +2,6 @@ package list
 
 // 解决链表问题最好的办法是在脑中或者纸上把链表画出来
 
-// 翻转链表
-func Reverse(head *Node) *Node {
-	// 边界，节点数 <= 1
-	if head == nil || head.Next == nil {
-		return head
-	}
-	// 从第二个节点开始，pre 是前序，cur 是当前
-	pre := head
-	cur := head.Next
-	pre.Next = nil // 释放第一个节点的指针域
-	for cur != nil {
-		next := cur.Next // 保存下一个节点
-		cur.Next = pre   // 反转指针域
-		pre = cur        // 往前走
-		cur = next
-	}
-	return pre
-}
-
 // 判断链表是否有环
 // 快指针追上慢指针说明有环
 // 快指针走到链表尾说明无环
@@ -93,28 +74,6 @@ func detectCycle(head *Node) *Node {
 	return slow
 }
 
-// 得到链表倒数第n个节点
-func nthToLast(head *Node, n int) *Node {
-	if head == nil || n < 1 {
-		return nil
-	}
-	l1 := head //两个指针, 一个先前进n-1步
-	l2 := head
-
-	for i := 0; i < n-1; i++ {
-		if l2 == nil {
-			return nil
-		}
-		l2 = l2.Next
-	}
-
-	for l2.Next != nil {
-		l1 = l1.Next
-		l2 = l2.Next
-	}
-	return l1
-}
-
 // 删除倒数第 n 个节点，返回头节点，解法很多
 // 1.先遍历得到长度，在位移
 // 2.双指针
@@ -138,9 +97,9 @@ func removeNthFromEnd(head *Node, n int) *Node {
 }
 
 // 返回倒数第k个节点,  使用dummy节点
-func kthToLast(head *Node, k int) int {
+func kthToLast(head *Node, k int) *Node {
 	if k <= 0 || head == nil {
-		return -1
+		return nil
 	}
 	var dummy = &Node{}
 	dummy.Next = head             // dummy指向头节点
@@ -150,32 +109,16 @@ func kthToLast(head *Node, k int) int {
 	for i := 0; i < k-1; i++ {
 		fast = fast.Next
 	}
+
+	// 快慢指针一起走，最终 slow 为倒数第k个节点
 	for {
 		if fast.Next == nil {
-			return slow.Val
+			return slow
 		}
 		fast = fast.Next
 		slow = slow.Next
 	}
 }
-
-// func kthToLast(head *Node, k int) *Node {
-// 	if k <= 0 || head == nil {
-// 		return nil
-// 	}
-// 	dummy := NewEmptyNode()
-// 	dummy.Next = head
-// 	for i := 0; i < k; i++ {
-// 		dummy = dummy.Next
-// 	}
-// 	for {
-// 		if dummy.Next == nil {
-// 			return head
-// 		}
-// 		dummy = dummy.Next
-// 		head = head.Next
-// 	}
-// }
 
 // 给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
 // 将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…
@@ -198,7 +141,7 @@ func reorderList(head *Node) {
 	left := head       // 前半部分头结点
 	right := slow.Next // 后半部分头结点
 	slow.Next = nil
-	right = reverse(right) // 反转后半部分
+	right = ReverseList(right) // 反转后半部分
 
 	// 合并
 	for right != nil {
@@ -267,34 +210,6 @@ func GetIntersectionNode(headA, headB *Node) *Node {
 		short = short.Next
 	}
 	return short
-}
-
-// 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
-// 说明:
-// 1 ≤ m ≤ n ≤ 链表长度。
-// 输入: 1->2->3->4->5->NULL, m = 2, n = 4
-// 输出: 1->4->3->2->5->NULL
-func reverseBetween(head *Node, m int, n int) *Node {
-	if head == nil || m > n {
-		return nil
-	}
-	dummy := &Node{Next: head}
-	prev := dummy
-
-	//走到将要翻转节点的前一个节点 prev
-	for i := 0; i < m-1; i++ {
-		prev = prev.Next
-	}
-
-	//cur 第m个节点，也就是将要翻转的节点
-	cur := prev.Next
-	for i := m; i < n; i++ {
-		tmp := cur.Next     //保存要反转节点的下一个节点
-		cur.Next = tmp.Next //当前节点指向 要放转节点的next节点，最终指向第m个节点的next
-		tmp.Next = prev.Next
-		prev.Next = tmp
-	}
-	return dummy.Next
 }
 
 // 移除链表指定值的元素

@@ -6,6 +6,7 @@ import (
 )
 
 // 合并两个有序链表 递归法
+// 递归函数定义：合并l1, l2 为开头的两个链表，并返回新的头结点
 func MergeLists(l1, l2 *Node) *Node {
 	if l1 == nil {
 		return l2
@@ -13,10 +14,12 @@ func MergeLists(l1, l2 *Node) *Node {
 	if l2 == nil {
 		return l1
 	}
+	// l1 值小，那么 l1.Next 指向子问题结果
 	if l1.Val < l2.Val {
 		l1.Next = MergeLists(l1.Next, l2)
 		return l1
 	} else if l1.Val >= l2.Val {
+		// l2 值小，那么 l2.Next 指向子问题结果
 		l2.Next = MergeLists(l1, l2.Next)
 	}
 	return l2
