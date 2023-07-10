@@ -280,8 +280,11 @@ func deleteDuplicates2(head *Node) *Node {
 
 // 请判断一个链表是否为回文链表。
 // 你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
+// 单链表无法倒着遍历，无法使用双指针技巧。
+// 因此两个指针应该结合递归使用：right 指针遍历到末尾，然后递归回来时，和 left 指针比较。
 func isPalindrome(head *Node) bool {
-	var traverse func(*Node, *Node) bool
+	// 递归函数定义：left、right 为头尾节点的链表，是回文链表
+	var traverse func(left *Node, right *Node) bool
 	traverse = func(left, right *Node) bool {
 		if right == nil {
 			return true

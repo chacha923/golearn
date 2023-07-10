@@ -17,14 +17,6 @@ func init() {
 	head.Append(7)
 }
 
-func TestReverse(t *testing.T) {
-	newHead := Reverse(head)
-	for newHead != nil {
-		fmt.Println(newHead.Val)
-		newHead = newHead.Next
-	}
-}
-
 func TestDeleteDuplicates2(t *testing.T) {
 	// 构造链表
 	head := NewNode(1)
@@ -52,4 +44,8 @@ func TestDeleteDuplicates2(t *testing.T) {
 	fmt.Println("result2")
 	newHead.Print()
 
+}
+
+func TestReverseList1(t *testing.T) {
+	ReverseList1(head)
 }

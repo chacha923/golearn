@@ -30,7 +30,7 @@ func reverseKGroup(head *Node, k int) *Node {
 		start := pre.Next
 		next := end.Next          // 保存当前链表组(k个一组)的下一个节点
 		end.Next = nil            // 截断k个节点
-		pre.Next = reverse(start) // 在当前组执行反转
+		pre.Next = ReverseList(start) // 在当前组执行反转
 		start.Next = next         // 反转后, start指向的节点跑到最后, 指向next
 
 		// 指向当前组最后一个节点, 即下一组头的前一个节点
@@ -111,3 +111,4 @@ func ReversePrintNodes(head *Node) {
 	ReversePrintNodes(head.Next)
 	println(head.Val)
 }
+

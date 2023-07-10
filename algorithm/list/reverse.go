@@ -29,6 +29,7 @@ func ReverseList(head *Node) *Node {
 
 // 递归 不用辅助栈
 func ReverseList1(head *Node) *Node {
+	// 定义：输入一个单链表头结点，将该链表反转，返回新的头结点
 	var reverse func(head *Node) *Node
 	reverse = func(head *Node) *Node {
 		// 最多递归到倒数第二个节点
@@ -42,7 +43,9 @@ func ReverseList1(head *Node) *Node {
 		head.Next = nil
 		return last
 	}
-
+	// last 肯定指向原链表最后一个节点不会变
+	// 理解：递归到最后一层时，这个时候执行 return 了，递归栈后面 return 的值就拿不到了。只能拿栈顶的 return 值？
+	// 这是符合递归函数定义的，输入 head 节点，返回这个链表反转后的头结点
 	return reverse(head)
 }
 
@@ -60,7 +63,13 @@ func ReverseList2(root *Node) *Node {
 	dummy.Next = stack.Top()
 	for stack.Len() > 0 {
 		var pop = stack.Pop()
-		pop.Next = stack.Top() // 指向栈顶节点，TODO 这里没处理最后一个节点出栈的情况
+		if stack.Len() > 0 {
+			//  指向栈顶节点
+			pop.Next = stack.Top()
+		} else if stack.Len() == 0 {
+			// 栈空，说明 pop 是最后一个节点
+			pop.Next = nil
+		}
 	}
 	return dummy.Next
 }
