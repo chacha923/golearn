@@ -108,3 +108,20 @@ func MinDepth(head *TreeNode) int {
 	}
 	return util.Min(MinDepth(head.Left), MinDepth(head.Right)) + 1
 }
+
+// 计算二叉树节点数
+func Count(root *TreeNode) int {
+	var traverse func(*TreeNode) int
+
+	traverse = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		var left = traverse(root.Left)
+		var right = traverse(root.Right)
+
+		return left + right + 1
+	}
+
+	return traverse(root)
+}
