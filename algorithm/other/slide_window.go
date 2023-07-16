@@ -1,6 +1,9 @@
 package other
 
-import "golearn/algorithm/util"
+import (
+	"golearn/algorithm/structure"
+	"golearn/algorithm/util"
+)
 
 // 最小覆盖子串
 func minWindow(s string, t string) string {
@@ -66,6 +69,27 @@ func lengthOfLongestSubstring(s string) int {
 		}
 		// 在这里更新答案
 		res = util.Max(res, right-left)
+	}
+	return res
+}
+
+// 给你输入一个数组 nums 和一个正整数 k，有一个大小为 k 的窗口在 nums 上从左至右滑动，请你输出每次窗口中 k 个元素的最大值。
+func maxSlidingWindow(nums []int, k int) []int {
+	window := structure.NewMonotonicQueue()
+	var res []int
+
+	for i := 0; i < len(nums); i++ {
+		if i < k-1 {
+			// 先把窗口的前 k-1 填满
+			window.Push(nums[i])
+		} else {
+			// 窗口开始向前滑动
+			window.Push(nums[i])
+			// 将当前窗口中的最大元素记入结果
+			res = append(res, window.Max())
+			// 移出最后的元素
+			window.Pop(nums[i-k+1])
+		}
 	}
 	return res
 }
