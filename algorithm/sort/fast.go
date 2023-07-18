@@ -38,3 +38,40 @@ func FastSort(arr []int, start int, end int) []int {
 	}
 	return arr
 }
+
+func FastSort1(nums []int, lo, hi int) {
+	// 前序位置
+	p := partition(nums, lo, hi)
+	FastSort1(nums, lo, p-1)
+	FastSort1(nums, p+1, hi)
+}
+
+func partition(nums []int, low, high int) int {
+	pivot := arr[high] // 选择最后一个元素作为枢纽元素
+	left := low
+	right := high
+
+	for left != right {
+		// 如果当前元素小于或等于枢纽元素，将其交换到左侧
+		for left < right && nums[right] < pivot {
+			right--
+		}
+		for left < right && nums[left] > pivot {
+			left++
+		}
+		//找到left比基准大，right比基准小，进行交换
+		if left < right {
+			swapByIndex(arr, left, right)
+		}
+	}
+
+	// 第一轮完成，让left和right重合的位置和基准交换，返回基准的位置
+	// 重合位置左边的元素，都小于 pivot，右边的元素都大于 pivot
+	swapByIndex(arr, low, left)
+	// 按 left 和 right 重合的位置做为分界点，对两边进行分治递归
+	return left
+}
+
+func swapByIndex(arr []int, i int, j int) {
+	arr[i], arr[j] = arr[j], arr[i]
+}
