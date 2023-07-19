@@ -72,11 +72,12 @@ func MaxDepth(head *TreeNode) int {
 	return util.Max(left, right) + 1
 }
 
-var maxDepth int
-var curDepth int
-
 // 用回溯思想求最大深度
 func MaxDepthBackstrack(head *TreeNode) int {
+	var maxDepth int
+	// 当前路径的深度，每次遍历到叶子节点，和 maxDepth 做比较
+	var curDepth int
+
 	var traverse = func(head *TreeNode) {
 		if head == nil {
 			return
@@ -89,7 +90,6 @@ func MaxDepthBackstrack(head *TreeNode) int {
 		MaxDepthBackstrack(head.Right)
 		curDepth--
 	}
-
 	traverse(head)
 	return maxDepth
 }
